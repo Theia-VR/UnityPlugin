@@ -1,16 +1,14 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using TheiaVR.Controllers;
 
 namespace TheiaVRTests
 {
-    [TestClass]
+    [TestFixture]
     public class StreamControllerTests
     {
-        
-        [TestMethod]
+        [Test]
         public void TestStart()
         {
-
             string vHost = Properties.Settings.Default.stream_host;
             int vPort = Properties.Settings.Default.stream_port;
             StreamController.GetInstance().Start(vHost, vPort);
@@ -18,7 +16,7 @@ namespace TheiaVRTests
             Assert.IsTrue(StreamController.GetInstance().IsActive());
         }
 
-        [TestMethod]
+        [Test]
         public void TestStop()
         {
             StreamController.GetInstance().Stop();

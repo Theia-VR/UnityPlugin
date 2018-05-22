@@ -23,27 +23,21 @@ namespace TheiaVRTests.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("127.0.0.1")]
         public string stream_host {
             get {
                 return ((string)(this["stream_host"]));
             }
-            set {
-                this["stream_host"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("11000")]
         public int stream_port {
             get {
                 return ((int)(this["stream_port"]));
-            }
-            set {
-                this["stream_port"] = value;
             }
         }
     }

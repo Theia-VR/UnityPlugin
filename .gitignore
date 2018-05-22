@@ -1,8 +1,8 @@
 .gitkeep
-packages/MSTest.TestAdapter.1.2.1/
-packages/MSTest.TestFramework.1.2.1/
+.vs/
+packages/
 TheiaVR/bin/
 TheiaVR/obj/
 TheiaVRTests/bin/
 TheiaVRTests/obj/
-.vs/
+
