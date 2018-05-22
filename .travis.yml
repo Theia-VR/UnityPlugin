@@ -4,5 +4,5 @@ install:
   - nuget restore TheiaVR.sln
   - nuget install NUnit.Runners -Version 3.6.1 -OutputDirectory TestsRunners
 script:
-  - xbuild /p:Configuration=Release solution-name.sln
+  - xbuild /p:Configuration=Release TheiaVR.sln
   - mono ./TestsRunners/NUnit.Runners.3.6.1/tools/nunit-console.exe ./TheiaVRTests/bin/Release/TheiaVRTests.dll
