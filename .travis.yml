@@ -1,7 +1,7 @@
 language: csharp
 solution: TheiaVR.sln
 install:
-  - nuget restore TheiaVR-name.sln
+  - nuget restore TheiaVR.sln
   - nuget install NUnit.Runners -Version 3.6.1 -OutputDirectory TestsRunners
 script:
   - xbuild /p:Configuration=Release solution-name.sln
