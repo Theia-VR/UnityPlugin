@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2000
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheiaVR", "TheiaVR\TheiaVR.csproj", "{8AFFE549-9A81-4C8D-9363-0473C1B73D4B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheiaVRTests", "TheiaVRTests\TheiaVRTests.csproj", "{AD929AB1-3953-419D-952F-5A7B73666C6F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8AFFE549-9A81-4C8D-9363-0473C1B73D4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AFFE549-9A81-4C8D-9363-0473C1B73D4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AFFE549-9A81-4C8D-9363-0473C1B73D4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AFFE549-9A81-4C8D-9363-0473C1B73D4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD929AB1-3953-419D-952F-5A7B73666C6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD929AB1-3953-419D-952F-5A7B73666C6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD929AB1-3953-419D-952F-5A7B73666C6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD929AB1-3953-419D-952F-5A7B73666C6F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {51A02234-5502-4E4F-9CD3-0496C6338221}
+	EndGlobalSection
+EndGlobal
