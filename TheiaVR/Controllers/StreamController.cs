@@ -102,7 +102,7 @@ namespace TheiaVR.Controllers
 
         public bool IsActive()
         {
-            return listener != null && listener.IsAlive;
+            return listener != null && listener.IsAlive && listening;
         }
     }
 }
