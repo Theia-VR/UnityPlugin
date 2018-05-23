@@ -17,7 +17,8 @@ namespace TheiaVR.Controllers
             try
             {
                 StreamController.GetInstance().Start(Properties.Settings.Default.stream_host, Properties.Settings.Default.stream_port);
-            }catch(Exception vException)
+                SkeletonController.GetInstance.Start();
+            }catch(Exception vException)  
             {
                 Messages.Log("<color=red>" + vException.Message + "</color>");
             }
