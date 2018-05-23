@@ -16,9 +16,8 @@ namespace TheiaVR.Controllers
             Messages.Log("Starting TheiaVR plugin");
             try
             {
-                StreamController.GetInstance().Start(Properties.Settings.Default.stream_host, Properties.Settings.Default.stream_port);
-                SkeletonController.GetInstance.Start();
-            }catch(Exception vException)  
+                StreamController.GetInstance().Start("127.0.0.1", 11000);
+            }catch(Exception vException)
             {
                 Messages.Log("<color=red>" + vException.Message + "</color>");
             }

@@ -1,8 +1,8 @@
 .gitkeep
 .vs/
-packages/
 TheiaVR/bin/
 TheiaVR/obj/
-TheiaVRTests/bin/
-TheiaVRTests/obj/
-
+Editor/TheiaVRTests/bin/
+Editor/TheiaVRTests/obj/
+*.meta
+*packages*

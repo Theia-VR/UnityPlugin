@@ -5,8 +5,8 @@ namespace TheiaVR.Helpers
 {
     class Messages
     {
-        private static bool logs = Properties.Settings.Default.logs;
-        private static bool unityLogs = Properties.Settings.Default.unityLogs;
+        private static bool logs = true;
+        private static bool unityLogs = false;
 
         public static void EnableLogs()
         {
