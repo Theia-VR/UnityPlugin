@@ -45,6 +45,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\BodyController .cs" />
     <Compile Include="Controllers\StreamController.cs" />
     <Compile Include="Helpers\Messages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

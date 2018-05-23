@@ -6,6 +6,8 @@ namespace TheiaVR.Controllers
 {
     public class UnityController : MonoBehaviour
     {
+        public GameObject vertex;
+
         void OnEnable()
         {
             Messages.Log("Enabling TheiaVR plugin");
@@ -17,7 +19,9 @@ namespace TheiaVR.Controllers
             try
             {
                 StreamController.GetInstance().Start("127.0.0.1", 11000);
-            }catch(Exception vException)
+                //BodyController.GetInstance().Start(vertex);
+            }
+            catch(Exception vException)
             {
                 Messages.Log("<color=red>" + vException.Message + "</color>");
             }
