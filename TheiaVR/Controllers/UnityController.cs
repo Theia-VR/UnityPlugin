@@ -16,7 +16,7 @@ namespace TheiaVR.Controllers
             Messages.Log("Starting TheiaVR plugin");
             try
             {
-                StreamController.GetInstance().Start();
+                StreamController.GetInstance().Start(true, false);
             }catch(Exception vException)
             {
                 Messages.Log("<color=red>" + vException.Message + "</color>");

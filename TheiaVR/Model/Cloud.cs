@@ -10,7 +10,7 @@ namespace TheiaVR.Model
 
         public Cloud()
         {
-
+            frames = new ArrayList();
         }
 
         public Cloud(byte aTag)
