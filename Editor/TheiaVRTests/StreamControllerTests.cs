@@ -4,14 +4,12 @@ using TheiaVR.Controllers;
 namespace TheiaVRTests
 {
     [TestFixture]
-    public class StreamControllerTests
+    class StreamControllerTests
     {
         [Test]
         public void TestStart()
         {
-            string vHost = "127.0.0.1";
-            int vPort = 11000;
-            StreamController.GetInstance().Start(vHost, vPort);
+            StreamController.GetInstance().Start(true, false);
 
             Assert.IsTrue(StreamController.GetInstance().IsActive());
         }
