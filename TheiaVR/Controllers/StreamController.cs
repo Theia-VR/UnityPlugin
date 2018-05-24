@@ -44,13 +44,13 @@ namespace TheiaVR.Controllers
 
         public void Stop()
         {
-            if (skeleton.IsActive())
+            if (skeleton != null && skeleton.IsActive())
             {
                 skeleton.Stop();
                 skeleton = null;
             }
 
-            if (cloud.IsActive())
+            if (cloud != null && cloud.IsActive())
             {
                 cloud.Stop();
                 cloud = null;

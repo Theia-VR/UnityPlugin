@@ -85,7 +85,7 @@ namespace TheiaVR.Controllers.Listeners
 
         public bool IsActive()
         {
-            return listener != null && listener.IsAlive && listening;
+            return listening && listener != null && listener.IsAlive;
         }
         
         public abstract void ParseStream(byte[] aBytes);
