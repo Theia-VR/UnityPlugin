@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework.Constraints;
+using TheiaVR.Controllers;
 using UnityEngine;
 using UnityEditor;
 
@@ -60,14 +61,28 @@ namespace TheiaVR.Editor
             GUILayout.FlexibleSpace();
             if (GUILayout.Button("Start", GUILayout.Width(70)))
             {
-                Debug.Log("Clicked the start button");
-                AddToLogs("Clicked the start button");
+                Messages.Log("Starting TheiaVR plugin");
+                try
+                {
+                    StreamController.GetInstance().Start(enableSkeleton, enablePointCloud);
+                }catch(Exception vException)
+                {
+                    Messages.Log("<color=red>" + vException.Message + "</color>");
+                }
+                Messages.Log("TheiaVR correctly started");
             }
 
             if (GUILayout.Button("Stop", GUILayout.Width(70)))
             {
-                Debug.Log("Clicked the stop button");
-                AddToLogs("Clicked the stop button");
+                Messages.Log("Stopping TheiaVR plugin");
+                try
+                {
+                    StreamController.GetInstance().Stop();
+                }
+                catch (Exception vException)
+                {
+                    Messages.Log("<color=red>" + vException.Message + "</color>");
+                }
             }
 
             GUILayout.FlexibleSpace();
