@@ -91,7 +91,7 @@ namespace TheiaVR.Editor
 
             GUILayout.Label("Logs", EditorStyles.boldLabel);
             scroll = EditorGUILayout.BeginScrollView(scroll);
-            logs = EditorGUILayout.TextArea(logs);
+            GUILayout.Label(logs, "textfield");
             EditorGUILayout.EndScrollView();
             if (GUILayout.Button("Clear", GUILayout.Width(70)))
             {
