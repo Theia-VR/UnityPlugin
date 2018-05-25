@@ -1,7 +1,6 @@
 ﻿using System;
 using TheiaVR.Helpers;
 using TheiaVR.Model;
-using TheiaVR.Graphics;
 
 namespace TheiaVR.Controllers.Listeners
 {

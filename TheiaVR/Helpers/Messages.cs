@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace TheiaVR.Helpers
 {
-    class Messages
+    public class Messages
     {
         private static bool logs = true;
         private static bool unityLogs = true;
