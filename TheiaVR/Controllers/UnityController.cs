@@ -4,7 +4,7 @@ using TheiaVR.Helpers;
 
 namespace TheiaVR.Controllers
 {
-    public class UnityController : MonoBehaviour
+    class UnityController : MonoBehaviour
     {
         public GameObject vertex;
         private static int numberOfVertexs = 15;
@@ -17,12 +17,12 @@ namespace TheiaVR.Controllers
             Messages.Log("Enabling TheiaVR plugin");
         }
 
-        void Start()
+        public void Start()
         {
             Messages.Log("Starting TheiaVR plugin");
             try
             {
-                StreamController.GetInstance().Start("127.0.0.1", 11000);
+                StreamController.GetInstance().Start(true, false);
                 startBodyController();   
             }
             catch(Exception vException)

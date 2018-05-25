@@ -1,0 +1,93 @@
+﻿using System;
+using System.Net;
+using System.Net.Sockets;
+using System.Text.RegularExpressions;
+using System.Threading;
+using TheiaVR.Helpers;
+
+namespace TheiaVR.Controllers.Listeners
+{
+    abstract class UDPStreamListener : StreamListener
+    {
+        private Thread listener;
+
+        private bool listening = false;
+
+        public void Start(string aHost, int aPort)
+        {
+            if (IsActive())
+            {
+                throw new Exception("Already connected to UDP stream");
+            }
+
+            IPAddress vAddress = null;
+
+            Regex vIp = new Regex(@"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b");
+
+            if (vIp.IsMatch(aHost))
+            {
+                vAddress = IPAddress.Parse(aHost);
+            }
+            else
+            {
+                var vAddresses = Dns.GetHostAddresses(aHost);
+                if (vAddresses.Length == 0)
+                {
+                    throw new Exception("Unable to retrieve address from specified host name : " + aHost);
+                }
+                else if (vAddresses.Length > 1)
+                {
+                    throw new Exception("There is more that one IP address to the specified host : " + aHost);
+                }
+                vAddress = vAddresses[0];
+            }
+
+            listener = new Thread(Listen);
+            listening = true;
+            listener.Start(new IPEndPoint(vAddress, aPort));
+        }
+
+        public void Stop()
+        {
+            listening = false;
+            listener.Abort();
+        }
+
+        protected void Listen(object aIPEndPoint)
+        {
+            IPEndPoint vIPEndPoint = (IPEndPoint)aIPEndPoint;
+            UdpClient vStreamer = new UdpClient(vIPEndPoint.Port);
+
+            try
+            {
+                while (listening)
+                {
+                    Byte[] vBytes = vStreamer.Receive(ref vIPEndPoint);
+                    if (vBytes.Length > 0)
+                    {
+                        ParseStream(vBytes);
+                    }
+                    else
+                    {
+                        Messages.LogWarning("UDP empty packet received");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Messages.LogError(e.ToString());
+            }
+            finally
+            {
+                vStreamer.Close();
+            }
+        }
+
+        public bool IsActive()
+        {
+            return listening && listener != null && listener.IsAlive;
+        }
+        
+        public abstract void ParseStream(byte[] aBytes);
+    }
+}
