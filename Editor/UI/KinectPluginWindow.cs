@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework.Constraints;
 using TheiaVR.Controllers;
+using TheiaVR.Helpers;
 using UnityEngine;
 using UnityEditor;
 
