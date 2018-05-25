@@ -10,53 +10,74 @@ namespace TheiaVR.Editor
 {
     public class KinectPluginWindow : EditorWindow
     {
-        // TODO : get the ip from persisted file
-        string ip = "127.0.0.1";
-        string cloudPort = "9876";
-        string skelPort = "9877";
-        bool enablePointCloud = true;
-        bool enableSkeleton = true;
+        string ip;
+        string cloudPort;
+        string skelPort;
+        bool enablePointCloud;
+        bool enableSkeleton;
         private string logs;
         private Vector2 scroll;
 
         // Add menu item named "Kinect Plugin" to the Window menu
-        [MenuItem ("Window/Kinect Plugin")]
-        public static void ShowWindow ()
+        [MenuItem("Window/Kinect Plugin")]
+        public static void ShowWindow()
         {
-            EditorWindow.GetWindow(typeof(KinectPluginWindow));       
+            EditorWindow.GetWindow(typeof(KinectPluginWindow));
         }
 
-        void OnGUI ()
+        private void OnEnable()
+        {
+            ip = EditorPrefs.GetString("ip","127.0.0.1");
+            cloudPort = EditorPrefs.GetString("cloudPort","9876");
+            skelPort = EditorPrefs.GetString("skelPort","9877");
+            enablePointCloud = EditorPrefs.GetBool("enablePointCloud",true);
+            enableSkeleton = EditorPrefs.GetBool("enableSkeleton",true);
+            Debug.Log("Got data!!");
+        }
+
+        private void OnDisable()
+        {
+            EditorPrefs.SetString("ip", ip);
+            EditorPrefs.SetString("cloudPort", cloudPort);
+            EditorPrefs.SetString("skelPort", skelPort);
+            EditorPrefs.SetBool("enablePointCloud", enablePointCloud);
+            EditorPrefs.SetBool("enableSkeleton", enableSkeleton);
+            Debug.Log("Saved data!!");
+        }
+
+        void OnGUI()
         {
             // The actual window code goes here
-            GUILayout.Label("Base Settings", EditorStyles.boldLabel);
-            ip = EditorGUILayout.TextField("Adresse IP du Streamer", ip);
-            cloudPort = EditorGUILayout.TextField("Port nuage", cloudPort);
-            skelPort = EditorGUILayout.TextField("Port squel.", skelPort);
-            enablePointCloud = EditorGUILayout.Toggle("Envoi du nuage de points", enablePointCloud);
-            enableSkeleton = EditorGUILayout.Toggle("Envoi du squelette", enableSkeleton);
+            GUILayout.Label("Network settings", EditorStyles.boldLabel);
+            ip = EditorGUILayout.TextField("IP Address", ip);
+            cloudPort = EditorGUILayout.TextField("Cloud port", cloudPort);
+            skelPort = EditorGUILayout.TextField("Skeleton port", skelPort);
+            GUILayout.Label("Receiving", EditorStyles.boldLabel);
+            enablePointCloud = EditorGUILayout.Toggle("Cloud points", enablePointCloud);
+            enableSkeleton = EditorGUILayout.Toggle("Skeleton", enableSkeleton);
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            if(GUILayout.Button("Start",GUILayout.Width(70)))
+            if (GUILayout.Button("Start", GUILayout.Width(70)))
             {
                 Debug.Log("Clicked the start button");
                 AddToLogs("Clicked the start button");
             }
-            
-            if(GUILayout.Button("Stop",GUILayout.Width(70)))
+
+            if (GUILayout.Button("Stop", GUILayout.Width(70)))
             {
                 Debug.Log("Clicked the stop button");
                 AddToLogs("Clicked the stop button");
             }
+
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
-            
+
             GUILayout.Label("Logs", EditorStyles.boldLabel);
             scroll = EditorGUILayout.BeginScrollView(scroll);
             logs = EditorGUILayout.TextArea(logs);
-            EditorGUILayout.EndScrollView();    
-            if(GUILayout.Button("Clear",GUILayout.Width(70)))
+            EditorGUILayout.EndScrollView();
+            if (GUILayout.Button("Clear", GUILayout.Width(70)))
             {
                 Debug.Log("Clicked the clear button");
                 logs = "";
@@ -67,9 +88,7 @@ namespace TheiaVR.Editor
         {
             logs += newLog;
             logs += "\n";
-//            scroll.y = ;
+            // TODO : scroll to bottom
         }
-        
-        
     }
 }
