@@ -50,8 +50,7 @@
     <Compile Include="Controllers\StreamController.cs" />
     <Compile Include="Controllers\Listeners\StreamListener.cs" />
     <Compile Include="Controllers\Listeners\UDPStreamListener.cs" />
-    <Compile Include="Graphics\CloudRenderer.cs" />
-    <Compile Include="Graphics\SkeletonRenderer.cs" />
+    <Compile Include="Graphics\Renderer.cs" />
     <Compile Include="Helpers\Messages.cs" />
     <Compile Include="Model\Cloud.cs" />
     <Compile Include="Model\Skeleton.cs" />

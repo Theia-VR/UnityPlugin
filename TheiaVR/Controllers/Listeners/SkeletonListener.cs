@@ -37,11 +37,10 @@ namespace TheiaVR.Controllers.Listeners
                 }
                 
             }
-
-            SkeletonRenderer vSkeletonRenderer = new SkeletonRenderer();
-            vSkeletonRenderer.Render(vSkeleton);
-
-
+            Messages.Log("Skeleton received");
+            Vertex[] vVertexs = vSkeleton.GetJoints();
+            UnityController.InitObjects(vVertexs);
+            
         }
     }
 }

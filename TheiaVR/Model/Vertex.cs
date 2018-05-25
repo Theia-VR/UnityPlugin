@@ -1,4 +1,6 @@
-﻿namespace TheiaVR.Model
+﻿using UnityEngine;
+
+namespace TheiaVR.Model
 {
     class Vertex
     {
@@ -25,6 +27,11 @@
         {
             tag = aTag;
         }
+
+        public Vector3 GetVector()
+        {
+            return new Vector3(x, y, z);
+        } 
 
         public override string ToString()
         {

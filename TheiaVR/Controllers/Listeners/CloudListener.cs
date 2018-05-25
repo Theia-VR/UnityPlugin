@@ -76,9 +76,6 @@ namespace TheiaVR.Controllers.Listeners
                 }
 
             }
-
-            CloudRenderer vCloudRenderer = new CloudRenderer();
-            vCloudRenderer.Render(vCloud);
             
         }
     }

@@ -1,20 +1,23 @@
 ﻿using System;
 using UnityEngine;
 using TheiaVR.Helpers;
+using TheiaVR.Model;
 
 namespace TheiaVR.Controllers
 {
     class UnityController : MonoBehaviour
     {
-        public GameObject vertex;
-        private static int numberOfVertexs = 15;
+        
+        public GameObject gameObject;
+        
+        private GameObject[] gameObjects;
 
-        private GameObject[] vertexs;
-        private Vector3[] cubesPositions;
+        private static Vertex[] vertexs;
 
         void OnEnable()
         {
             Messages.Log("Enabling TheiaVR plugin");
+            
         }
 
         public void Start()
@@ -22,48 +25,41 @@ namespace TheiaVR.Controllers
             Messages.Log("Starting TheiaVR plugin");
             try
             {
-                StreamController.GetInstance().Start(true, false);
-                startBodyController();   
+                if (gameObjects == null || gameObjects.Length <= 0)
+                {
+                    gameObjects = new GameObject[25];
+                    for (int i = 0; i < 25; i++)
+                    {
+                        gameObjects[i] = Instantiate(gameObject, new Vector3((float)i, (float)i, (float)i), Quaternion.identity);
+                    }
+                }
+                
             }
             catch(Exception vException)
             {
-                Messages.Log("<color=red>" + vException.Message + "</color>");
+                Messages.Log(vException.ToString());
             }
             
             Messages.Log("TheiaVR correctly started");
         }
-
-        private void startBodyController()
-        {
-            Messages.Log("Body Controller started");
-            vertexs = new GameObject[numberOfVertexs];
-            cubesPositions = new Vector3[numberOfVertexs];
-
-            for (int i = 0; i < numberOfVertexs; i++)
-            {
-                vertexs[i] = Instantiate(vertex, new Vector3((float)i, (float)i, (float)i), Quaternion.identity);
-                cubesPositions[i] = new Vector3((float)i, (float)i, (float)i);
-            }
-            Messages.Log("BodyController : " + vertexs.ToString());
-            Messages.Log("BodyController : " + cubesPositions.ToString());
-            Messages.Log("BodyController : Instantiate all vertexs");
-
-
-        }
-
+        
         void Update()
         {
-            //vertexs[0].transform.GetComponent<Rigidbody>().AddForce(transform.forward * 2);
-            for(int j=0; j<numberOfVertexs; j++)
-            {
-                //vector.x = vector.x + UnityEngine.Random.Range(-1.0f, 1.0f);
-                cubesPositions[j] = new Vector3(cubesPositions[j].x + UnityEngine.Random.Range(-1.0f, 1.0f), cubesPositions[j].y + UnityEngine.Random.Range(-1.0f, 1.0f), cubesPositions[j].z + UnityEngine.Random.Range(-1.0f, 1.0f));
-                cubesPositions[j] = new Vector3(cubesPositions[j].x + UnityEngine.Random.Range(-1.0f, 1.0f), cubesPositions[j].y + UnityEngine.Random.Range(-1.0f, 1.0f), cubesPositions[j].z + UnityEngine.Random.Range(-1.0f, 1.0f));
-            }
 
-            for(int i=0; i<numberOfVertexs; i++)
+            if(vertexs != null && vertexs.Length > 0){
+                
+                for(int i = 0; i < gameObjects.Length ; i++)
+                {
+                    System.Random rnd = new System.Random();
+                    gameObjects[i].transform.SetPositionAndRotation(new Vector3((float)rnd.Next(1, 11), (float)rnd.Next(1, 11), (float)rnd.Next(1, 11)), Quaternion.identity);   
+                }
+            }
+        }
+
+        public static void InitObjects(Vertex[] aVertexs){
+            lock (vertexs)
             {
-                vertexs[i].transform.SetPositionAndRotation(cubesPositions[i], Quaternion.identity);
+                vertexs = aVertexs;
             }
         }
 

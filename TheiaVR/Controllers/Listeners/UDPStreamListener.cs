@@ -43,6 +43,7 @@ namespace TheiaVR.Controllers.Listeners
             }
 
             listener = new Thread(Listen);
+            listener.IsBackground = true;
             listening = true;
             listener.Start(new IPEndPoint(vAddress, aPort));
         }

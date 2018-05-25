@@ -40,13 +40,18 @@ namespace TheiaVR.Helpers
             }
         }
 
+        public static void LogInfo(string aMessage)
+        {
+            Log(aMessage);
+        }
+
         public static void LogWarning(string aMessage)
         {
             if (logs)
             {
                 if (unityLogs)
                 {
-                    Debug.Log("<color=yellow>" + aMessage + "</color>");
+                    Debug.Log(aMessage);
                 }
                 Console.WriteLine(aMessage);
             }
@@ -58,7 +63,7 @@ namespace TheiaVR.Helpers
             {
                 if (unityLogs)
                 {
-                    Debug.Log("<color=red>" + aMessage + "</color>");
+                    Debug.Log(aMessage);
                 }
                 Console.WriteLine(aMessage);
             }
