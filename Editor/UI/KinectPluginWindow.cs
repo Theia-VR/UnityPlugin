@@ -25,7 +25,7 @@ namespace TheiaVR.Editor
         [MenuItem("Window/Kinect Plugin")]
         public static void ShowWindow()
         {
-            EditorWindow.GetWindow(typeof(KinectPluginWindow));
+            GetWindow(typeof(KinectPluginWindow),false,"Kinect Plugin");
         }
 
         private void OnEnable()
