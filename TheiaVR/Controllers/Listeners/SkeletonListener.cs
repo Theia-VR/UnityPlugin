@@ -1,6 +1,8 @@
 ﻿using System;
 using TheiaVR.Helpers;
 using TheiaVR.Model;
+using TheiaVR.Graphics;
+using System.Collections.Generic;
 
 namespace TheiaVR.Controllers.Listeners
 {
@@ -10,7 +12,7 @@ namespace TheiaVR.Controllers.Listeners
         public override void ParseStream(byte[] aBytes)
         {
 
-            Skeleton vSkeleton = new Skeleton(aBytes[8], (aBytes.Length - 8) / 16);
+            Skeleton vSkeleton = new Skeleton(aBytes[8]);
 
             int vVertexIndex = 0;
             int vByteIndex = 9;
@@ -37,8 +39,10 @@ namespace TheiaVR.Controllers.Listeners
                 
             }
             Messages.Log("Skeleton received");
-            Vertex[] vVertexs = vSkeleton.GetJoints();
-            UnityController.InitObjects(vVertexs);
+            List<Vertex> vVertexs = vSkeleton.GetJoints();
+            
+           
+            SkeletonRenderer.GetInstance().UpdatePositions(vVertexs);
             
         }
     }

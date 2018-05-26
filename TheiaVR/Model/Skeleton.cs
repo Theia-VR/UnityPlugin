@@ -1,19 +1,19 @@
-﻿namespace TheiaVR.Model
+﻿using System.Collections.Generic;
+
+namespace TheiaVR.Model
 {
     class Skeleton
     {
         private byte tag;
         
-        private Vertex[] joints;
+        private List<Vertex> joints;
 
-        public Skeleton(byte aTag, Vertex[] aJoints)
+        public Skeleton(byte aTag)
         {
-            joints = aJoints;
+            joints = new List<Vertex>();
             tag = aTag;
         }
-
-        public Skeleton(byte aTag, int aNumberOfJoints) : this(aTag, new Vertex[aNumberOfJoints]) {}
-
+        
         public byte getTag()
         {
             return tag;
@@ -21,10 +21,13 @@
 
         public void AddJoint(Vertex aJoint)
         {
-            joints[joints.Length-1] = aJoint;
+            lock (joints)
+            {
+                joints.Add(aJoint);
+            }
         }
 
-        public Vertex[] GetJoints()
+        public List<Vertex> GetJoints()
         {
             return joints;
         }

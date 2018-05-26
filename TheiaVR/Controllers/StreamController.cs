@@ -1,4 +1,6 @@
-﻿using TheiaVR.Controllers.Listeners;
+﻿using TheiaVR.Helpers;
+using TheiaVR.Graphics;
+using TheiaVR.Controllers.Listeners;
 
 namespace TheiaVR.Controllers
 {
@@ -29,11 +31,18 @@ namespace TheiaVR.Controllers
         
         public void Start(bool aStartSkeleton, bool aStartCloud)
         {
-            if (skeleton == null && aStartSkeleton)
-            {
-                skeleton = new SkeletonListener();
-                skeleton.Start("127.0.0.1", 9877); // TODO: Replace by configuration value
-            }
+                if (skeleton == null && aStartSkeleton)
+                {
+                    if (SkeletonRenderer.GetInstance() != null)
+                    {
+                        skeleton = new SkeletonListener();
+                        skeleton.Start("127.0.0.1", 9877); // TODO: Replace by configuration value
+                    }
+                    else
+                    {
+                        Messages.LogError("SkeletonRenderer is not activated. Please associate it to a game component and try again.");
+                    }
+                }
 
             if (cloud == null && aStartCloud)
             {
