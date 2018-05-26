@@ -17,7 +17,7 @@ namespace TheiaVR.Editor
         string skelPort;
         bool enablePointCloud;
         bool enableSkeleton;
-        private string logs;
+        private string logs = "";
         private Vector2 scroll;
 
         // Add menu item named "Kinect Plugin" to the Window menu
@@ -90,9 +90,17 @@ namespace TheiaVR.Editor
             EditorGUILayout.EndHorizontal();
 
             GUILayout.Label("Logs", EditorStyles.boldLabel);
-            scroll = EditorGUILayout.BeginScrollView(scroll);
-            GUILayout.Label(logs, "textfield");
-            EditorGUILayout.EndScrollView();
+            if (logs != "")
+            {
+                scroll = EditorGUILayout.BeginScrollView(scroll);
+                GUILayout.Label(logs, "textfield");
+                EditorGUILayout.EndScrollView();
+            }
+            else
+            {
+                GUILayout.Label("No logs for now");
+            }
+
             if (GUILayout.Button("Clear", GUILayout.Width(70)))
             {
                 Debug.Log("Clicked the clear button");
