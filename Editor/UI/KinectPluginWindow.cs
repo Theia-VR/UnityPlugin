@@ -18,6 +18,8 @@ namespace TheiaVR.Editor
         bool enablePointCloud;
         bool enableSkeleton;
         private bool enableUnityLogs;
+        private bool started = false;
+        private bool stopped = true;
 
         // Add menu item named "Kinect Plugin" to the Window menu
         [MenuItem("Window/Kinect Plugin")]
@@ -61,7 +63,7 @@ namespace TheiaVR.Editor
             enableSkeleton = EditorGUILayout.Toggle("Skeleton", enableSkeleton);
 
             GUILayout.Label("Logs", EditorStyles.boldLabel);
-            enableUnityLogs = EditorGUILayout.Toggle("Unity logs", enableUnityLogs);
+            enableUnityLogs = EditorGUILayout.Toggle("Display Unity logs", enableUnityLogs);
             if (enableUnityLogs)
             {
                 Messages.EnableUnityLogs();
@@ -73,31 +75,41 @@ namespace TheiaVR.Editor
             
             EditorGUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            if (GUILayout.Button("Start", GUILayout.Width(70)))
+            if (stopped)
             {
-                Messages.Log("Starting TheiaVR plugin");
-                try
+                if (GUILayout.Button("Start", GUILayout.Width(70)))
                 {
-                    StreamController.GetInstance().Start(enableSkeleton, enablePointCloud);
-                }
-                catch (Exception vException)
-                {
-                    Messages.Log("<color=red>" + vException.Message + "</color>");
-                }
+                    Messages.Log("Starting TheiaVR plugin");
+                    try
+                    {
+                        StreamController.GetInstance().Start(enableSkeleton, enablePointCloud);
+                        stopped = false;
+                        started = true;
+                    }
+                    catch (Exception vException)
+                    {
+                        Messages.Log("<color=red>" + vException.Message + "</color>");
+                    }
 
-                Messages.Log("TheiaVR correctly started");
+                    Messages.Log("TheiaVR correctly started");
+                }
             }
 
-            if (GUILayout.Button("Stop", GUILayout.Width(70)))
+            if (started)
             {
-                Messages.Log("Stopping TheiaVR plugin");
-                try
+                if (GUILayout.Button("Stop", GUILayout.Width(70)))
                 {
-                    StreamController.GetInstance().Stop();
-                }
-                catch (Exception vException)
-                {
-                    Messages.Log("<color=red>" + vException.Message + "</color>");
+                    Messages.Log("Stopping TheiaVR plugin");
+                    try
+                    {
+                        StreamController.GetInstance().Stop();
+                        stopped = true;
+                        started = false;
+                    }
+                    catch (Exception vException)
+                    {
+                        Messages.Log("<color=red>" + vException.Message + "</color>");
+                    }
                 }
             }
 
