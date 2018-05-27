@@ -73,6 +73,8 @@ namespace TheiaVR.Editor
                 Messages.DisableUnityLogs();
             }
 
+            EditorGUILayout.Separator();
+            EditorGUILayout.Separator();
             EditorGUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
 
