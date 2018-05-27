@@ -38,7 +38,6 @@ namespace TheiaVR.Editor
             enablePointCloud = EditorPrefs.GetBool("enablePointCloud", true);
             enableSkeleton = EditorPrefs.GetBool("enableSkeleton", true);
             enableUnityLogs = EditorPrefs.GetBool("enableUnityLogs", true);
-            Messages.Log("Got saved data!!");
         }
 
         private void OnDisable()
@@ -49,7 +48,6 @@ namespace TheiaVR.Editor
             EditorPrefs.SetBool("enablePointCloud", enablePointCloud);
             EditorPrefs.SetBool("enableSkeleton", enableSkeleton);
             EditorPrefs.SetBool("enableUnityLogs", enableUnityLogs);
-            Messages.Log("Saved data!!");
         }
 
         void OnGUI()
