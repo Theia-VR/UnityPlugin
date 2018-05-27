@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using NUnit.Framework.Constraints;
 using TheiaVR.Controllers;
 using TheiaVR.Helpers;
@@ -13,98 +15,109 @@ namespace TheiaVR.Editor
     public class KinectPluginWindow : EditorWindow
     {
         string ip;
-        string cloudPort;
-        string skelPort;
+        int cloudPort;
+        int skelPort;
         bool enablePointCloud;
         bool enableSkeleton;
-        private string logs;
-        private Vector2 scroll;
+        private bool enableUnityLogs;
+        private bool started;
+        private bool stopped = true;
 
         // Add menu item named "Kinect Plugin" to the Window menu
         [MenuItem("Window/Kinect Plugin")]
         public static void ShowWindow()
         {
-            EditorWindow.GetWindow(typeof(KinectPluginWindow));
+            GetWindow(typeof(KinectPluginWindow), false, "Kinect Plugin");
         }
 
         private void OnEnable()
         {
-            ip = EditorPrefs.GetString("ip","127.0.0.1");
-            cloudPort = EditorPrefs.GetString("cloudPort","9876");
-            skelPort = EditorPrefs.GetString("skelPort","9877");
-            enablePointCloud = EditorPrefs.GetBool("enablePointCloud",true);
-            enableSkeleton = EditorPrefs.GetBool("enableSkeleton",true);
-            Debug.Log("Got data!!");
+            ip = EditorPrefs.GetString("ip", "127.0.0.1");
+            cloudPort = EditorPrefs.GetInt("cloudPort", 9876);
+            skelPort = EditorPrefs.GetInt("skelPort", 9877);
+            enablePointCloud = EditorPrefs.GetBool("enablePointCloud", true);
+            enableSkeleton = EditorPrefs.GetBool("enableSkeleton", true);
+            enableUnityLogs = EditorPrefs.GetBool("enableUnityLogs", true);
         }
 
         private void OnDisable()
         {
             EditorPrefs.SetString("ip", ip);
-            EditorPrefs.SetString("cloudPort", cloudPort);
-            EditorPrefs.SetString("skelPort", skelPort);
+            EditorPrefs.SetInt("cloudPort", cloudPort);
+            EditorPrefs.SetInt("skelPort", skelPort);
             EditorPrefs.SetBool("enablePointCloud", enablePointCloud);
             EditorPrefs.SetBool("enableSkeleton", enableSkeleton);
-            Debug.Log("Saved data!!");
+            EditorPrefs.SetBool("enableUnityLogs", enableUnityLogs);
         }
 
         void OnGUI()
         {
-            // The actual window code goes here
             GUILayout.Label("Network settings", EditorStyles.boldLabel);
             ip = EditorGUILayout.TextField("IP Address", ip);
-            cloudPort = EditorGUILayout.TextField("Cloud port", cloudPort);
-            skelPort = EditorGUILayout.TextField("Skeleton port", skelPort);
+
+            cloudPort = EditorGUILayout.DelayedIntField("Cloud port", cloudPort);
+            skelPort = EditorGUILayout.DelayedIntField("Skeleton port", skelPort);
+
             GUILayout.Label("Receiving", EditorStyles.boldLabel);
             enablePointCloud = EditorGUILayout.Toggle("Cloud points", enablePointCloud);
             enableSkeleton = EditorGUILayout.Toggle("Skeleton", enableSkeleton);
 
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            if (GUILayout.Button("Start", GUILayout.Width(70)))
+            GUILayout.Label("Logs", EditorStyles.boldLabel);
+            enableUnityLogs = EditorGUILayout.Toggle("Display Unity logs", enableUnityLogs);
+            if (enableUnityLogs)
             {
-                Messages.Log("Starting TheiaVR plugin");
-                try
-                {
-                    StreamController.GetInstance().Start(enableSkeleton, enablePointCloud);
-                }catch(Exception vException)
-                {
-                    Messages.Log("<color=red>" + vException.Message + "</color>");
-                }
-                Messages.Log("TheiaVR correctly started");
+                Messages.EnableUnityLogs();
+            }
+            else
+            {
+                Messages.DisableUnityLogs();
             }
 
-            if (GUILayout.Button("Stop", GUILayout.Width(70)))
+            EditorGUILayout.Separator();
+            EditorGUILayout.Separator();
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+
+            if (stopped)
             {
-                Messages.Log("Stopping TheiaVR plugin");
-                try
+                if (GUILayout.Button("Start", GUILayout.Width(70)))
                 {
-                    StreamController.GetInstance().Stop();
+                    Messages.Log("Starting TheiaVR plugin");
+                    try
+                    {
+                        StreamController.GetInstance().Start(enableSkeleton, enablePointCloud);
+                        stopped = false;
+                        started = true;
+                    }
+                    catch (Exception vException)
+                    {
+                        Messages.Log("<color=red>" + vException.Message + "</color>");
+                    }
+
+                    Messages.Log("TheiaVR correctly started");
                 }
-                catch (Exception vException)
+            }
+
+            if (started)
+            {
+                if (GUILayout.Button("Stop", GUILayout.Width(70)))
                 {
-                    Messages.Log("<color=red>" + vException.Message + "</color>");
+                    Messages.Log("Stopping TheiaVR plugin");
+                    try
+                    {
+                        StreamController.GetInstance().Stop();
+                        stopped = true;
+                        started = false;
+                    }
+                    catch (Exception vException)
+                    {
+                        Messages.Log("<color=red>" + vException.Message + "</color>");
+                    }
                 }
             }
 
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
-
-            GUILayout.Label("Logs", EditorStyles.boldLabel);
-            scroll = EditorGUILayout.BeginScrollView(scroll);
-            logs = EditorGUILayout.TextArea(logs);
-            EditorGUILayout.EndScrollView();
-            if (GUILayout.Button("Clear", GUILayout.Width(70)))
-            {
-                Debug.Log("Clicked the clear button");
-                logs = "";
-            }
-        }
-
-        void AddToLogs(string newLog)
-        {
-            logs += newLog;
-            logs += "\n";
-            // TODO : scroll to bottom
         }
     }
 }
