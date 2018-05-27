@@ -22,7 +22,6 @@ namespace TheiaVR.Editor
         private bool enableUnityLogs;
         private bool started;
         private bool stopped = true;
-        private string error = "";
 
         // Add menu item named "Kinect Plugin" to the Window menu
         [MenuItem("Window/Kinect Plugin")]
@@ -53,15 +52,32 @@ namespace TheiaVR.Editor
             Messages.Log("Saved data!!");
         }
 
-        bool IncorrectIp(string aIp)
+        void OnGUI()
         {
-            Regex vIp = new Regex(@"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b");
+            GUILayout.Label("Network settings", EditorStyles.boldLabel);
+            ip = EditorGUILayout.TextField("IP Address", ip);
 
-            return !vIp.IsMatch(aIp);
-        }
+            cloudPort = EditorGUILayout.DelayedIntField("Cloud port", cloudPort);
+            skelPort = EditorGUILayout.DelayedIntField("Skeleton port", skelPort);
 
-        void DisplayButton()
-        {
+            GUILayout.Label("Receiving", EditorStyles.boldLabel);
+            enablePointCloud = EditorGUILayout.Toggle("Cloud points", enablePointCloud);
+            enableSkeleton = EditorGUILayout.Toggle("Skeleton", enableSkeleton);
+
+            GUILayout.Label("Logs", EditorStyles.boldLabel);
+            enableUnityLogs = EditorGUILayout.Toggle("Display Unity logs", enableUnityLogs);
+            if (enableUnityLogs)
+            {
+                Messages.EnableUnityLogs();
+            }
+            else
+            {
+                Messages.DisableUnityLogs();
+            }
+
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+
             if (stopped)
             {
                 if (GUILayout.Button("Start", GUILayout.Width(70)))
@@ -99,66 +115,9 @@ namespace TheiaVR.Editor
                     }
                 }
             }
-        }
-
-        void OnGUI()
-        {
-            GUILayout.Label("Network settings", EditorStyles.boldLabel);
-            ip = EditorGUILayout.TextField("IP Address", ip);
-            if (IncorrectIp(ip))
-            {
-                Messages.Log("KO");
-                error = "salut";
-            }
-            else
-            {
-                Messages.Log("OK");
-                error = "";
-            }
-
-            cloudPort = EditorGUILayout.DelayedIntField("Cloud port", cloudPort);
-//            if (cloudPort < 1 || cloudPort > 65535)
-//            {
-//                error = "Choose a port between 1 and 65535";
-//            }
-//            else
-//            {
-//                error = "";
-//            }
-
-            skelPort = EditorGUILayout.DelayedIntField("Skeleton port", skelPort);
-
-            GUILayout.Label("Receiving", EditorStyles.boldLabel);
-            enablePointCloud = EditorGUILayout.Toggle("Cloud points", enablePointCloud);
-            enableSkeleton = EditorGUILayout.Toggle("Skeleton", enableSkeleton);
-
-            GUILayout.Label("Logs", EditorStyles.boldLabel);
-            enableUnityLogs = EditorGUILayout.Toggle("Display Unity logs", enableUnityLogs);
-            if (enableUnityLogs)
-            {
-                Messages.EnableUnityLogs();
-            }
-            else
-            {
-                Messages.DisableUnityLogs();
-            }
-
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-
-            if (error == "")
-            {
-                DisplayButton();
-            }
-            else
-            {
-                GUILayout.Label("Incorrect IP Address", EditorStyles.boldLabel);
-            }
 
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
-            
-
         }
     }
 }
