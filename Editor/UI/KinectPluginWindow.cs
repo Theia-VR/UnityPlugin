@@ -55,8 +55,8 @@ namespace TheiaVR.Editor
             GUILayout.Label("Network settings", EditorStyles.boldLabel);
             ip = EditorGUILayout.TextField("IP Address", ip);
 
-            cloudPort = EditorGUILayout.DelayedIntField("Cloud port", cloudPort);
-            skelPort = EditorGUILayout.DelayedIntField("Skeleton port", skelPort);
+            cloudPort = EditorGUILayout.IntField("Cloud port", cloudPort);
+            skelPort = EditorGUILayout.IntField("Skeleton port", skelPort);
 
             GUILayout.Label("Receiving", EditorStyles.boldLabel);
             enablePointCloud = EditorGUILayout.Toggle("Cloud points", enablePointCloud);
