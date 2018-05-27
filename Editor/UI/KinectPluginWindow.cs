@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
-using NUnit.Framework.Constraints;
 using TheiaVR.Controllers;
 using TheiaVR.Helpers;
 using UnityEngine;
