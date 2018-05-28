@@ -6,3 +6,4 @@ Editor/TheiaVRTests/bin/
 Editor/TheiaVRTests/obj/
 *.meta
 *packages*
+.idea/*

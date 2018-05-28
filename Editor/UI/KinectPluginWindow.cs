@@ -15,7 +15,7 @@ namespace TheiaVR.Editor
         bool enableSkeleton;
         private bool enableUnityLogs;
         private bool started;
-        private bool stopped = true;
+        private bool stopped;
 
         // Add menu item named "Kinect Plugin" to the Window menu
         [MenuItem("Window/Kinect Plugin")]
@@ -44,6 +44,20 @@ namespace TheiaVR.Editor
             EditorPrefs.SetBool("enableUnityLogs", enableUnityLogs);
         }
 
+        private void Awake()
+        {
+            if (StreamController.GetInstance().IsActive())
+            {
+                started = true;
+                stopped = false;
+            }
+            else
+            {
+                started = false;
+                stopped = true;
+            }
+        }
+        
         void OnGUI()
         {
             GUILayout.Label("Network settings", EditorStyles.boldLabel);
