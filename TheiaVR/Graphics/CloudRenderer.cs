@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using TheiaVR.Helpers;
 using TheiaVR.Model;
 
 namespace TheiaVR.Graphics
@@ -9,7 +10,7 @@ namespace TheiaVR.Graphics
     {
         private static CloudRenderer instance;
 
-        public GameObject obj;
+        public GameObject gameObject;
 
         private List<GameObject> gameObjects;
         private List<Vertex> positions;
@@ -22,50 +23,53 @@ namespace TheiaVR.Graphics
         public void Start()
         {
             instance = this;
-            gameObjects = new List<GameObject>();
-            positions = new List<Vertex>();
 
-            for (int i = 0; i < 3000; i++)
-            {
-                gameObjects.Add(Instantiate(obj));
-            }
+            gameObjects = new List<GameObject>(3000);
+            positions = new List<Vertex>(3000);
         }
 
         void Update()
         {
 
-            if (gameObjects != null && positions != null && positions.Count > 0)
+            if (gameObject != null && positions != null && gameObjects.Count <= 0 && positions.Count > 0)
+            {
+                for (int i = 0; i < positions.Count; i++)
+                {
+                    if (positions[i] != null)
+                    {
+                        gameObjects.Add(Instantiate(gameObject, positions[i].GetVector(), Quaternion.identity));
+                    }
+                }
+            }
+            else if (gameObjects != null && positions != null && positions.Count > 0)
             {
                 for (int i = 0; i < gameObjects.Count; i++)
                 {
-                    gameObjects[i].transform.SetPositionAndRotation(positions[i].GetVector(), Quaternion.identity);
+                    if(positions[i] != null)
+                    {
+                        gameObjects[i].transform.SetPositionAndRotation(positions[i].GetVector(), Quaternion.identity);
+                    }
                 }
             }
         }
 
 
-        public void UpdatePositionsByFrame(Vertex[][] frames)
+        public void UpdatePositions(List<Vertex> aVertexs)
         {
-            /*ArrayList newPositions = new List<Vertex>();
-            for (int i = 0; i < frames.Count; i++)
+            if (positions.Count <= 0)
             {
-
+                positions = aVertexs;
             }
-            int i = 0;
-            foreach(Vertex vertex in frames)
+            else
             {
-                if(distanceChange(positions[i].GetVector(),vertex.GetVector()) < 0.05)
+                for (int i = 0; i < aVertexs.Count; i++)
                 {
-                    //do nothing
+                    if (positions[i] != null && !(distanceChange(aVertexs[i].GetVector(), positions[i].GetVector()) < 0.05))
+                    {
+                        positions[i] = aVertexs[i];
+                    }    
                 }
-                else
-                {
-                    positions[i] = vertex;
-                }
-                
-                i++;
             }
-                        */
         }
 
         private double distanceChange(Vector3 vector31, Vector3 vector32)
