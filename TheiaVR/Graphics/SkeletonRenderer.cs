@@ -7,7 +7,7 @@ namespace TheiaVR.Graphics
     class SkeletonRenderer : MonoBehaviour
     {
         private static SkeletonRenderer instance;
-        public GameObject gameObject;
+        public GameObject obj;
         
         private List<GameObject> gameObjects;
         private List<Vertex> positions;
@@ -25,7 +25,7 @@ namespace TheiaVR.Graphics
 
             for(int i=0; i < 25; i++)
             {
-                gameObjects.Add(Instantiate(gameObject));
+                gameObjects.Add(Instantiate(obj));
             }
         }
 
@@ -47,3 +47,4 @@ namespace TheiaVR.Graphics
         }
     }
 }
+    

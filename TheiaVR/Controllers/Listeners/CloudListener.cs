@@ -1,6 +1,9 @@
 ﻿using System;
 using TheiaVR.Helpers;
 using TheiaVR.Model;
+using System.Collections;
+using System.Collections.Generic;
+using TheiaVR.Graphics;
 
 namespace TheiaVR.Controllers.Listeners
 {
@@ -75,6 +78,10 @@ namespace TheiaVR.Controllers.Listeners
                 }
 
             }
+
+            ArrayList frames = vCloud.GetFrames();
+
+            CloudRenderer.GetInstance().UpdatePositionsByFrame(frames);
             
         }
     }
