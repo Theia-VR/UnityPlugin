@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 using TheiaVR.Model;
-using System.Collections;
 
 namespace TheiaVR.Graphics
 {
     class CloudRenderer : MonoBehaviour
     {
         private static CloudRenderer instance;
+
         public GameObject obj;
 
         private List<GameObject> gameObjects;
@@ -46,13 +44,13 @@ namespace TheiaVR.Graphics
         }
 
 
-        public void UpdatePositionsByFrame(ArrayList frames)
+        public void UpdatePositionsByFrame(Vertex[][] frames)
         {
             /*ArrayList newPositions = new List<Vertex>();
             for (int i = 0; i < frames.Count; i++)
             {
 
-            }*/
+            }
             int i = 0;
             foreach(Vertex vertex in frames)
             {
@@ -67,7 +65,7 @@ namespace TheiaVR.Graphics
                 
                 i++;
             }
-                        
+                        */
         }
 
         private double distanceChange(Vector3 vector31, Vector3 vector32)

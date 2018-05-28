@@ -6,11 +6,11 @@ namespace TheiaVR.Model
     {
         private byte tag;
         
-        private ArrayList frames;
+        private Vertex[][] frames;
 
-        public Cloud()
+        public Cloud(int aNbOfFrames)
         {
-            frames = new ArrayList();
+            frames = new Vertex[aNbOfFrames][];
         }
 
         public Cloud(byte aTag)
@@ -25,10 +25,13 @@ namespace TheiaVR.Model
         
         public void AddFrame(Vertex[] aFrame)
         {
-            frames.Add(aFrame);
+            lock (frames)
+            {
+                frames[frames.Length - 1] =  aFrame;
+            }
         }
 
-        public ArrayList GetFrames()
+        public Vertex[][] GetFrames()
         {
             return frames;
         }

@@ -2,6 +2,7 @@
 using TheiaVR.Graphics;
 using TheiaVR.Controllers.Listeners;
 using UnityEditor;
+using System.Threading;
 
 namespace TheiaVR.Controllers
 {
@@ -32,23 +33,26 @@ namespace TheiaVR.Controllers
         
         public void Start(bool aStartSkeleton, bool aStartCloud)
         {
-                if (skeleton == null && aStartSkeleton)
+            if (skeleton == null && aStartSkeleton)
+            {
+                if (SkeletonRenderer.GetInstance() != null)
                 {
-                    if (SkeletonRenderer.GetInstance() != null)
-                    {
-                        skeleton = new SkeletonListener();
-                        skeleton.Start("127.0.0.1", EditorPrefs.GetInt("skelPort"));
-                    }
-                    else
-                    {
-                        Messages.LogError("SkeletonRenderer is not activated. Please associate it to a game component and try again.");
-                    }
+                    skeleton = new SkeletonListener();
+                    skeleton.Start(EditorPrefs.GetString("ip"), EditorPrefs.GetInt("skelPort"));
                 }
+                else
+                {
+                    Messages.LogError("SkeletonRenderer is not activated. Please associate it to a game component and try again.");
+                }
+            }
 
             if (cloud == null && aStartCloud)
             {
-                cloud = new CloudListener();
-                cloud.Start("127.0.0.1", EditorPrefs.GetInt("cloudPort"));
+                if(CloudRenderer.GetInstance() != null)
+                {
+                    cloud = new CloudListener();
+                    cloud.Start(EditorPrefs.GetString("ip"), EditorPrefs.GetInt("cloudPort"));
+                }
             }
         }
 

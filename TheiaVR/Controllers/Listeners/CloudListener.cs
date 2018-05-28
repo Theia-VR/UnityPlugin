@@ -19,13 +19,11 @@ namespace TheiaVR.Controllers.Listeners
 
         public override void ParseStream(byte[] aBytes)
         {
-
-            Cloud vCloud = new Cloud();
+            Cloud vCloud = new Cloud(aBytes.Length - 8);
+            Vertex[] vFrame = new Vertex[aBytes.Length - 8];
 
             bool vNewFrame = false;
-
-            Vertex[] vFrame = null;
-
+            
             long vTimeStamp = BitConverter.ToInt64(aBytes, 0);
             if (vTimeStamp > timestamp)
             {
@@ -78,10 +76,8 @@ namespace TheiaVR.Controllers.Listeners
                 }
 
             }
-
-            ArrayList frames = vCloud.GetFrames();
-
-            CloudRenderer.GetInstance().UpdatePositionsByFrame(frames);
+            
+            //CloudRenderer.GetInstance().UpdatePositions(vCloud.GetFrames());
             
         }
     }

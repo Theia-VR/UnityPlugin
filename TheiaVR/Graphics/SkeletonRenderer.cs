@@ -21,7 +21,7 @@ namespace TheiaVR.Graphics
         {
             instance = this;
             gameObjects = new List<GameObject>();
-            positions = new List<Vertex>();
+            positions = new List<Vertex>(25);
 
             for(int i=0; i < 25; i++)
             {
@@ -41,10 +41,11 @@ namespace TheiaVR.Graphics
             }
         }
 
-        public void UpdatePositions(List<Vertex> aVertex)
+        public void UpdatePositions(List<Vertex> aVertexs)
         {
-            positions = aVertex;
+            positions = aVertexs;    
         }
+        
     }
 }
     

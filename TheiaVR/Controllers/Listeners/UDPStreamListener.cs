@@ -19,7 +19,6 @@ namespace TheiaVR.Controllers.Listeners
             {
                 throw new Exception("Already connected to UDP stream");
             }
-
             IPAddress vAddress = null;
 
             Regex vIp = new Regex(@"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b");
@@ -43,7 +42,7 @@ namespace TheiaVR.Controllers.Listeners
             }
 
             listener = new Thread(Listen);
-            listener.IsBackground = true;
+            //listener.IsBackground = true;
             listening = true;
             listener.Start(new IPEndPoint(vAddress, aPort));
         }
@@ -51,7 +50,10 @@ namespace TheiaVR.Controllers.Listeners
         public void Stop()
         {
             listening = false;
-            listener.Abort();
+            if (listener.IsAlive)
+            {
+                listener.Abort();
+            }
         }
 
         protected void Listen(object aIPEndPoint)
@@ -73,6 +75,10 @@ namespace TheiaVR.Controllers.Listeners
                         Messages.LogWarning("UDP empty packet received");
                     }
                 }
+            }
+            catch (ThreadAbortException aError)
+            {
+                Messages.LogWarning("Listener stopping forced: " + aError.Source);
             }
             catch (Exception e)
             {

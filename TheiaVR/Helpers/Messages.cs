@@ -6,7 +6,7 @@ namespace TheiaVR.Helpers
     public class Messages
     {
         private static bool logs = true;
-        private static bool unityLogs = true;
+        private static bool unityLogs = false;
 
         public static void EnableLogs()
         {
@@ -51,7 +51,7 @@ namespace TheiaVR.Helpers
             {
                 if (unityLogs)
                 {
-                    Debug.Log(aMessage);
+                    Debug.LogWarning(aMessage);
                 }
                 Console.WriteLine(aMessage);
             }
@@ -63,7 +63,7 @@ namespace TheiaVR.Helpers
             {
                 if (unityLogs)
                 {
-                    Debug.Log(aMessage);
+                    Debug.LogError(aMessage);
                 }
                 Console.WriteLine(aMessage);
             }

@@ -8,9 +8,9 @@ namespace TheiaVR.Model
         
         private List<Vertex> joints;
 
-        public Skeleton(byte aTag)
+        public Skeleton(byte aTag, int aNbOfJoints)
         {
-            joints = new List<Vertex>();
+            joints = new List<Vertex>(aNbOfJoints);
             tag = aTag;
         }
         
