@@ -6,7 +6,7 @@ using TheiaVR.Model;
 
 namespace TheiaVR.Graphics
 {
-    class CloudRenderer : MonoBehaviour
+    public class CloudRenderer : MonoBehaviour
     {
         private static CloudRenderer instance;
 

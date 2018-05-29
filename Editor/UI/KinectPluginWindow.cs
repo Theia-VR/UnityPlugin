@@ -1,5 +1,6 @@
 ﻿using System;
 using TheiaVR.Controllers;
+using TheiaVR.Graphics;
 using TheiaVR.Helpers;
 using UnityEngine;
 using UnityEditor;
@@ -32,6 +33,16 @@ namespace TheiaVR.Editor
             enablePointCloud = EditorPrefs.GetBool("enablePointCloud", true);
             enableSkeleton = EditorPrefs.GetBool("enableSkeleton", true);
             enableUnityLogs = EditorPrefs.GetBool("enableUnityLogs", true);
+            
+            if (enablePointCloud)
+            {
+                AddCloudRenderer();
+            }
+
+            if (enableSkeleton)
+            {
+                AddSkeletonRenderer();
+            }
         }
 
         private void OnDisable()
@@ -58,6 +69,16 @@ namespace TheiaVR.Editor
             }
         }
 
+        private void AddCloudRenderer()
+        {
+            Camera.main.gameObject.AddComponent<CloudRenderer>();
+        }
+
+        private void AddSkeletonRenderer()
+        {
+            Camera.main.gameObject.AddComponent<SkeletonRenderer>();
+        }
+
         private void DisplayStartUI()
         {
             stopped = true;
@@ -69,7 +90,7 @@ namespace TheiaVR.Editor
             stopped = false;
             started = true;
         }
-        
+
         private void CheckPlayModeState(PlayModeStateChange state)
         {
             if (state == PlayModeStateChange.ExitingPlayMode)
@@ -82,7 +103,7 @@ namespace TheiaVR.Editor
         {
             // Listening to play button
             EditorApplication.playModeStateChanged += CheckPlayModeState;
-            
+
             GUILayout.Label("Network settings", EditorStyles.boldLabel);
             ip = EditorGUILayout.TextField("IP Address", ip);
 
@@ -90,18 +111,44 @@ namespace TheiaVR.Editor
             skelPort = EditorGUILayout.IntField("Skeleton port", skelPort);
 
             GUILayout.Label("Receiving", EditorStyles.boldLabel);
-            enablePointCloud = EditorGUILayout.Toggle("Cloud points", enablePointCloud);
-            enableSkeleton = EditorGUILayout.Toggle("Skeleton", enableSkeleton);
+            if (EditorGUILayout.Toggle("Cloud points", enablePointCloud) != enablePointCloud)
+            {
+                enablePointCloud = !enablePointCloud;
+                if (enablePointCloud)
+                {
+                    AddCloudRenderer();
+                }
+                else
+                {
+                    DestroyImmediate(Camera.main.gameObject.GetComponent<CloudRenderer>());
+                }
+            }
+
+            if (EditorGUILayout.Toggle("Skeleton", enableSkeleton) != enableSkeleton)
+            {
+                enableSkeleton = !enableSkeleton;
+                if (enableSkeleton)
+                {
+                    AddSkeletonRenderer();
+                }
+                else
+                {
+                    DestroyImmediate(Camera.main.gameObject.GetComponent<SkeletonRenderer>());
+                }
+            }
 
             GUILayout.Label("Logs", EditorStyles.boldLabel);
-            enableUnityLogs = EditorGUILayout.Toggle("Display Unity logs", enableUnityLogs);
-            if (enableUnityLogs)
+            if (EditorGUILayout.Toggle("Display Unity logs", enableUnityLogs) != enableUnityLogs)
             {
-                Messages.EnableUnityLogs();
-            }
-            else
-            {
-                Messages.DisableUnityLogs();
+                enableUnityLogs = !enableUnityLogs;
+                if (enableUnityLogs)
+                {
+                    Messages.EnableUnityLogs();
+                }
+                else
+                {
+                    Messages.DisableUnityLogs();
+                }
             }
 
             EditorGUILayout.Separator();

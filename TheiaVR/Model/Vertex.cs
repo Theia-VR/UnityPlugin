@@ -2,7 +2,7 @@
 
 namespace TheiaVR.Model
 {
-    class Vertex
+    public class Vertex
     {
 
         private float x { get; }

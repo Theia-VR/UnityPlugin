@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace TheiaVR.Graphics
 {
-    class SkeletonRenderer : MonoBehaviour
+    public class SkeletonRenderer : MonoBehaviour
     {
         private static SkeletonRenderer instance;
         public GameObject gameObject;
