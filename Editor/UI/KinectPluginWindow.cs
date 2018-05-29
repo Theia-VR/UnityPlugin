@@ -33,7 +33,7 @@ namespace TheiaVR.Editor
             enablePointCloud = EditorPrefs.GetBool("enablePointCloud", true);
             enableSkeleton = EditorPrefs.GetBool("enableSkeleton", true);
             enableUnityLogs = EditorPrefs.GetBool("enableUnityLogs", true);
-            
+
             if (enablePointCloud)
             {
                 AddCloudRenderer();
@@ -71,12 +71,18 @@ namespace TheiaVR.Editor
 
         private void AddCloudRenderer()
         {
-            Camera.main.gameObject.AddComponent<CloudRenderer>();
+            if (Camera.main.gameObject.GetComponent<CloudRenderer>() == null)
+            {
+                Camera.main.gameObject.AddComponent<CloudRenderer>();
+            }
         }
 
         private void AddSkeletonRenderer()
         {
-            Camera.main.gameObject.AddComponent<SkeletonRenderer>();
+            if (Camera.main.gameObject.GetComponent<SkeletonRenderer>() == null)
+            {
+                Camera.main.gameObject.AddComponent<SkeletonRenderer>();
+            }
         }
 
         private void DisplayStartUI()
