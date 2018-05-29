@@ -48,18 +48,41 @@ namespace TheiaVR.Editor
         {
             if (StreamController.GetInstance().IsActive())
             {
-                started = true;
-                stopped = false;
+                DisplayStopUI();
+                Messages.Log("Displaying stop");
             }
             else
             {
-                started = false;
-                stopped = true;
+                DisplayStartUI();
+                Messages.Log("Displaying start");
             }
         }
+
+        private void DisplayStartUI()
+        {
+            stopped = true;
+            started = false;
+        }
+
+        private void DisplayStopUI()
+        {
+            stopped = false;
+            started = true;
+        }
         
+        private void CheckPlayModeState(PlayModeStateChange state)
+        {
+            if (state == PlayModeStateChange.ExitingPlayMode)
+            {
+                DisplayStartUI();
+            }
+        }
+
         void OnGUI()
         {
+            // Listening to play button
+            EditorApplication.playModeStateChanged += CheckPlayModeState;
+            
             GUILayout.Label("Network settings", EditorStyles.boldLabel);
             ip = EditorGUILayout.TextField("IP Address", ip);
 
@@ -94,8 +117,7 @@ namespace TheiaVR.Editor
                     try
                     {
                         StreamController.GetInstance().Start(enableSkeleton, enablePointCloud);
-                        stopped = false;
-                        started = true;
+                        DisplayStopUI();
                     }
                     catch (Exception vException)
                     {
@@ -114,8 +136,7 @@ namespace TheiaVR.Editor
                     try
                     {
                         StreamController.GetInstance().Stop();
-                        stopped = true;
-                        started = false;
+                        DisplayStartUI();
                     }
                     catch (Exception vException)
                     {
