@@ -31,13 +31,14 @@ namespace TheiaVR.Graphics
         void Update()
         {
 
-            if (gameObject != null && positions != null && gameObjects.Count <= 0 && positions.Count > 0)
+            if (gameObject != null && positions != null && gameObjects.Count < positions.Count)
             {
+                int vNbOfGameObjects = gameObjects.Count;
                 for (int i = 0; i < positions.Count - gameObjects.Count; i++)
                 {
                     if (positions[i] != null)
                     {
-                        gameObjects.Add(Instantiate(gameObject, positions[i].GetVector(), Quaternion.identity));
+                        gameObjects.Add(Instantiate(gameObject, positions[vNbOfGameObjects + i].GetVector(), Quaternion.identity));
                     }
                 }
             }

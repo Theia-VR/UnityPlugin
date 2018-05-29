@@ -21,8 +21,7 @@ namespace TheiaVR.Controllers.Listeners
         public override void ParseStream(byte[] aBytes)
         {
             long vTimeStamp = BitConverter.ToInt64(aBytes, 0);
-
-            //Messages.Log("Timestamp : " + vTimeStamp);
+            
             if (vTimeStamp > timestamp)
             {
 
@@ -53,13 +52,8 @@ namespace TheiaVR.Controllers.Listeners
                             Messages.LogError("Cannot read Vertex number " + vVertexIndex + ": " + vError.Message);
                         }
                     }
-                    Messages.Log(vVertex.Count + " Vertex recus");
+                    CloudRenderer.GetInstance().UpdatePositions(cloud);
                 }
-                else
-                {
-                    Messages.Log("y a rien wesh");
-                }
-                CloudRenderer.GetInstance().UpdatePositions(cloud);
             }
             else
             {
