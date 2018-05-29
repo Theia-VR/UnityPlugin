@@ -54,7 +54,6 @@
     <Compile Include="Graphics\SkeletonRenderer.cs" />
     <Compile Include="Helpers\Messages.cs" />
     <Compile Include="Model\Cloud.cs" />
-    <Compile Include="Model\Skeleton.cs" />
     <Compile Include="Model\Vertex.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

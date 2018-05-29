@@ -11,16 +11,18 @@ namespace TheiaVR.Controllers.Listeners
     {
 
         private long timestamp;
+        private List<Vertex> cloud;
 
         public CloudListener()
         {
             timestamp = 0;
+            cloud = new List<Vertex>(3000);
         }
 
         public override void ParseStream(byte[] aBytes)
         {
-            Cloud vCloud = new Cloud(aBytes.Length - 8);
-            Vertex[] vFrame = new Vertex[aBytes.Length - 8];
+
+            List<Vertex> vFrame = new List<Vertex>(aBytes.Length - 8);
 
             bool vNewFrame = false;
             
@@ -29,17 +31,17 @@ namespace TheiaVR.Controllers.Listeners
             {
                 timestamp = vTimeStamp;
                 vNewFrame = true;
-                if (vFrame != null)
+                if (vFrame != null && vFrame.Count > 0)
                 {
-                    vCloud.AddFrame(vFrame);
+                    cloud.AddRange(vFrame);
                 }
             }
 
             if (aBytes.Length - 8 > 0)
             {
-                Vertex[] vVertex = new Vertex[(aBytes.Length - 8) / 16];
+                List<Vertex> vVertex = new List<Vertex>((aBytes.Length - 8) / 16);
                 int vVertexIndex = 0;
-                int vByteIndex = 9;
+                int vByteIndex = 8;
                 while (vByteIndex < aBytes.Length)
                 {
                     try
@@ -51,9 +53,10 @@ namespace TheiaVR.Controllers.Listeners
                         byte r = aBytes[vByteIndex + 12];
                         byte g = aBytes[vByteIndex + 13];
                         byte b = aBytes[vByteIndex + 14];
-
-                        vFrame[vFrame.Length - 1] = new Vertex(x, y, z, r, g, b);
-
+                        
+                        vFrame.Add(new Vertex(x, y, z, r, g, b));
+                        
+                        vVertexIndex++;
                         vByteIndex += 16;
                     }
                     catch (Exception vError)
@@ -68,17 +71,15 @@ namespace TheiaVR.Controllers.Listeners
                 }
                 else
                 {
-                    Vertex[] vResult = new Vertex[vFrame.Length + vVertex.Length];
-                    vFrame.CopyTo(vResult, 0);
-
-                    Array.Copy(vVertex, 0, vResult, vFrame.Length, vVertex.Length);
-                    vFrame = vResult;
+                    vFrame.AddRange(vVertex);
                 }
 
             }
-            
-            //CloudRenderer.GetInstance().UpdatePositions(vCloud.GetFrames());
-            
+            for(int i = 0; i < cloud.Count; i++)
+            {
+                Messages.Log(cloud[i].ToString());
+            }
+            CloudRenderer.GetInstance().UpdatePositions(cloud);
         }
     }
 }

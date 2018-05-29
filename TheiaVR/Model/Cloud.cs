@@ -1,11 +1,11 @@
-﻿using System.Collections;
+﻿using System.Collections.Generic;
 
 namespace TheiaVR.Model
 {
     class Cloud
     {
         private byte tag;
-        
+
         private Vertex[][] frames;
 
         public Cloud(int aNbOfFrames)
@@ -27,7 +27,7 @@ namespace TheiaVR.Model
         {
             lock (frames)
             {
-                frames[frames.Length - 1] =  aFrame;
+                frames[frames.Length - 1] = aFrame;
             }
         }
 

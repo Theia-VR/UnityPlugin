@@ -12,7 +12,7 @@ namespace TheiaVR.Controllers.Listeners
         public override void ParseStream(byte[] aBytes)
         {
 
-            Skeleton vSkeleton = new Skeleton(aBytes[8], aBytes.Length - 8);
+            List<Vertex> vSkeleton = new List<Vertex>(aBytes.Length - 8);
 
             int vVertexIndex = 0;
             int vByteIndex = 9;
@@ -28,7 +28,7 @@ namespace TheiaVR.Controllers.Listeners
                     byte g = aBytes[vByteIndex + 13];
                     byte b = aBytes[vByteIndex + 14];
 
-                    vSkeleton.AddJoint(new Vertex(x, y, z, r, g, b));
+                    vSkeleton.Add(new Vertex(x, y, z, r, g, b));
 
                     vByteIndex += 16;
                 }
@@ -38,10 +38,7 @@ namespace TheiaVR.Controllers.Listeners
                 }
                 
             }
-
-            List<Vertex> vVertexs = vSkeleton.GetJoints();
-            SkeletonRenderer.GetInstance().UpdatePositions(vVertexs);
-            
+            SkeletonRenderer.GetInstance().UpdatePositions(vSkeleton);
         }
     }
 }
