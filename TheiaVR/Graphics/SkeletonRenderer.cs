@@ -1,5 +1,6 @@
 ﻿using TheiaVR.Model;
 using System.Collections.Generic;
+using TheiaVR.Helpers;
 using UnityEngine;
 
 namespace TheiaVR.Graphics
@@ -55,6 +56,12 @@ namespace TheiaVR.Graphics
         {
             positions = aVertexs;
         }
+
+        void OnApplicationQuit()
+        { 
+            Messages.Log("Call la méthode de Baptiste");
+        }
+
     }
 }
     

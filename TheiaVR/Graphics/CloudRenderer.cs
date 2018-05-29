@@ -33,7 +33,7 @@ namespace TheiaVR.Graphics
 
             if (gameObject != null && positions != null && gameObjects.Count <= 0 && positions.Count > 0)
             {
-                for (int i = 0; i < positions.Count; i++)
+                for (int i = 0; i < positions.Count - gameObjects.Count; i++)
                 {
                     if (positions[i] != null)
                     {

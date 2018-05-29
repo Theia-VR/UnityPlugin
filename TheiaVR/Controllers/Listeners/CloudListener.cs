@@ -9,7 +9,6 @@ namespace TheiaVR.Controllers.Listeners
 {
     class CloudListener : UDPStreamListener
     {
-
         private long timestamp;
         private List<Vertex> cloud;
 
@@ -21,65 +20,52 @@ namespace TheiaVR.Controllers.Listeners
 
         public override void ParseStream(byte[] aBytes)
         {
-
-            List<Vertex> vFrame = new List<Vertex>(aBytes.Length - 8);
-
-            bool vNewFrame = false;
-            
             long vTimeStamp = BitConverter.ToInt64(aBytes, 0);
+
+            //Messages.Log("Timestamp : " + vTimeStamp);
             if (vTimeStamp > timestamp)
             {
-                timestamp = vTimeStamp;
-                vNewFrame = true;
-                if (vFrame != null && vFrame.Count > 0)
-                {
-                    cloud.AddRange(vFrame);
-                }
-            }
 
-            if (aBytes.Length - 8 > 0)
-            {
-                List<Vertex> vVertex = new List<Vertex>((aBytes.Length - 8) / 16);
-                int vVertexIndex = 0;
-                int vByteIndex = 8;
-                while (vByteIndex < aBytes.Length)
+                if (aBytes.Length > 0)
                 {
-                    try
+                    List<Vertex> vVertex = new List<Vertex>();
+                    int vVertexIndex = 0;
+                    int vByteIndex = 8;
+                    while (vByteIndex < aBytes.Length)
                     {
-                        float x = BitConverter.ToSingle(aBytes, vByteIndex);
-                        float y = BitConverter.ToSingle(aBytes, vByteIndex + 4);
-                        float z = BitConverter.ToSingle(aBytes, vByteIndex + 8);
+                        try
+                        {
+                            float x = BitConverter.ToSingle(aBytes, vByteIndex);
+                            float y = BitConverter.ToSingle(aBytes, vByteIndex + 4);
+                            float z = BitConverter.ToSingle(aBytes, vByteIndex + 8);
 
-                        byte r = aBytes[vByteIndex + 12];
-                        byte g = aBytes[vByteIndex + 13];
-                        byte b = aBytes[vByteIndex + 14];
-                        
-                        vFrame.Add(new Vertex(x, y, z, r, g, b));
-                        
-                        vVertexIndex++;
-                        vByteIndex += 16;
-                    }
-                    catch (Exception vError)
-                    {
-                        Messages.LogError("Cannot read Vertex number " + vVertexIndex + ": " + vError.Message);
-                    }
+                            byte r = aBytes[vByteIndex + 12];
+                            byte g = aBytes[vByteIndex + 13];
+                            byte b = aBytes[vByteIndex + 14];
 
-                }
-                if (vNewFrame)
-                {
-                    vFrame = vVertex;
+                            cloud.Add(new Vertex(x, y, z, r, g, b));
+                       
+                            vVertexIndex++;
+                            vByteIndex += 16;
+                        }
+                        catch (Exception vError)
+                        {
+                            Messages.LogError("Cannot read Vertex number " + vVertexIndex + ": " + vError.Message);
+                        }
+                    }
+                    Messages.Log(vVertex.Count + " Vertex recus");
                 }
                 else
                 {
-                    vFrame.AddRange(vVertex);
+                    Messages.Log("y a rien wesh");
                 }
-
+                CloudRenderer.GetInstance().UpdatePositions(cloud);
             }
-            for(int i = 0; i < cloud.Count; i++)
+            else
             {
-                Messages.Log(cloud[i].ToString());
+                cloud.Clear();
             }
-            CloudRenderer.GetInstance().UpdatePositions(cloud);
+            
         }
     }
 }
