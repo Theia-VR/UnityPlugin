@@ -1,6 +1,5 @@
 ﻿using TheiaVR.Model;
 using System.Collections.Generic;
-using TheiaVR.Helpers;
 using UnityEngine;
 
 namespace TheiaVR.Graphics
@@ -66,6 +65,14 @@ namespace TheiaVR.Graphics
         public void UpdatePositions(List<Vertex> aVertexs)
         {
             positions = aVertexs;
+        }
+
+        public void OnDestroy()
+        {
+            foreach (GameObject obj in gameObjects)
+            {
+                Destroy(obj, 3.0f);
+            }
         }
     }
 }
