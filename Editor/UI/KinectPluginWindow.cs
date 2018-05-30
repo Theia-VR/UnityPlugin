@@ -19,7 +19,7 @@ namespace TheiaVR.Editor
         private bool stopped;
 
         // Add menu item named "Kinect Plugin" to the Window menu
-        [MenuItem("Window/Kinect Plugin")]
+        [MenuItem("Kinect Plugin/Show plugin")]
         public static void ShowWindow()
         {
             GetWindow(typeof(KinectPluginWindow), false, "Kinect Plugin");
