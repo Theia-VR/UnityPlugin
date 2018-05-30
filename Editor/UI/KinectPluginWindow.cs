@@ -13,6 +13,7 @@ namespace TheiaVR.Editor
         int cloudPort;
         int skelPort;
         bool enablePointCloud;
+        private int pointAmount;
         bool enableSkeleton;
         private bool enableUnityLogs;
         private bool started;
@@ -30,6 +31,7 @@ namespace TheiaVR.Editor
             ip = EditorPrefs.GetString("ip", "127.0.0.1");
             cloudPort = EditorPrefs.GetInt("cloudPort", 9876);
             skelPort = EditorPrefs.GetInt("skelPort", 9877);
+            pointAmount = EditorPrefs.GetInt("pointAmount", 3000);
             enablePointCloud = EditorPrefs.GetBool("enablePointCloud", true);
             enableSkeleton = EditorPrefs.GetBool("enableSkeleton", true);
             enableUnityLogs = EditorPrefs.GetBool("enableUnityLogs", true);
@@ -50,6 +52,7 @@ namespace TheiaVR.Editor
             EditorPrefs.SetString("ip", ip);
             EditorPrefs.SetInt("cloudPort", cloudPort);
             EditorPrefs.SetInt("skelPort", skelPort);
+            EditorPrefs.SetInt("pointAmount", pointAmount);
             EditorPrefs.SetBool("enablePointCloud", enablePointCloud);
             EditorPrefs.SetBool("enableSkeleton", enableSkeleton);
             EditorPrefs.SetBool("enableUnityLogs", enableUnityLogs);
@@ -112,9 +115,9 @@ namespace TheiaVR.Editor
 
             GUILayout.Label("Network settings", EditorStyles.boldLabel);
             ip = EditorGUILayout.TextField("IP Address", ip);
-
             cloudPort = EditorGUILayout.IntField("Cloud port", cloudPort);
             skelPort = EditorGUILayout.IntField("Skeleton port", skelPort);
+            pointAmount = EditorGUILayout.IntField("Points per frame", pointAmount);
 
             GUILayout.Label("Receiving", EditorStyles.boldLabel);
             if (EditorGUILayout.Toggle("Cloud points", enablePointCloud) != enablePointCloud)
