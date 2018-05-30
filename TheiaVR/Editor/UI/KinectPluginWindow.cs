@@ -5,7 +5,7 @@ using TheiaVR.Helpers;
 using UnityEngine;
 using UnityEditor;
 
-namespace TheiaVR.Editor
+namespace TheiaVR.Editor.UI
 {
     public class KinectPluginWindow : EditorWindow
     {
@@ -205,4 +205,5 @@ namespace TheiaVR.Editor
             EditorGUILayout.EndHorizontal();
         }
     }
+
 }
