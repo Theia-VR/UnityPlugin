@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using TheiaVR.Helpers;
 using TheiaVR.Model;
 
 namespace TheiaVR.Graphics
