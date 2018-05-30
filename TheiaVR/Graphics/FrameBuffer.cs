@@ -100,7 +100,6 @@ namespace TheiaVR.Graphics
 
                 int vNbVertexs = Math.Min(vertexs.Count, aNbOfVertexs);
 
-
                 vVertexs = vertexs.GetRange(0, vNbVertexs);
                 vVertexs.RemoveRange(0, vNbVertexs);
 
@@ -119,7 +118,7 @@ namespace TheiaVR.Graphics
 
                 List<Vertex> vVertexs = new List<Vertex>(vertexs);
                 vertexs.Clear();
-                Messages.Log("Retrait: " + vVertexs.Count);
+
                 return vVertexs;
             }
         }
