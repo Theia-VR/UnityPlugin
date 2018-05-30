@@ -8,7 +8,7 @@ namespace TheiaVR.Graphics
     public class SkeletonRenderer : MonoBehaviour
     {
         private static SkeletonRenderer instance;
-        public GameObject gameObject;
+        private GameObject gameObject;
 
         private List<GameObject> gameObjects;
         private List<Vertex> positions;
@@ -24,7 +24,18 @@ namespace TheiaVR.Graphics
 
             gameObjects = new List<GameObject>(25);
             positions = new List<Vertex>(25);
-            gameObject = Resources.Load("Vertex_prefabs", typeof(GameObject)) as GameObject;
+            //gameObject = Resources.Load("Vertex_prefabs", typeof(GameObject)) as GameObject;
+            /*gameObject = new GameObject("Vertex_prefab", 
+                new Transform(),
+
+                
+                )*/
+            gameObject =  GameObject.CreatePrimitive(PrimitiveType.Cube);
+
+            Color color = new Color(139f / 255f, 69f / 255f, 19f / 255f, 1f);
+            Vector3 scale = new Vector3(0.1f, 0.1f, 0.1f);
+            gameObject.GetComponent<Renderer>().material.color = color;
+            gameObject.transform.localScale = scale;
         }
 
         void Update()
