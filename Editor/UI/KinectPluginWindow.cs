@@ -9,12 +9,12 @@ namespace TheiaVR.Editor
 {
     public class KinectPluginWindow : EditorWindow
     {
-        string ip;
-        int cloudPort;
-        int skelPort;
-        bool enablePointCloud;
+        private string ip;
+        private int cloudPort;
+        private int skelPort;
+        private bool enablePointCloud;
         private int pointAmount;
-        bool enableSkeleton;
+        private bool enableSkeleton;
         private bool enableUnityLogs;
         private bool started;
         private bool stopped;
@@ -100,9 +100,9 @@ namespace TheiaVR.Editor
             started = true;
         }
 
-        private void CheckPlayModeState(PlayModeStateChange state)
+        private void CheckPlayModeState(PlayModeStateChange aState)
         {
-            if (state == PlayModeStateChange.ExitingPlayMode)
+            if (aState == PlayModeStateChange.ExitingPlayMode)
             {
                 DisplayStartUI();
             }
