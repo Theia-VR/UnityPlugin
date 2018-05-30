@@ -24,7 +24,7 @@ namespace TheiaVR.Graphics
 
             gameObjects = new List<GameObject>(25);
             positions = new List<Vertex>(25);
-            
+            gameObject = Resources.Load("Vertex_prefabs", typeof(GameObject)) as GameObject;
         }
 
         void Update()
@@ -56,12 +56,6 @@ namespace TheiaVR.Graphics
         {
             positions = aVertexs;
         }
-
-        void OnApplicationQuit()
-        { 
-            Messages.Log("Call la méthode de Baptiste");
-        }
-
     }
 }
     
