@@ -167,6 +167,7 @@ namespace TheiaVR.Editor.UI
 
             if (stopped)
             {
+                EditorGUI.BeginDisabledGroup(!enablePointCloud && !enableSkeleton);
                 if (GUILayout.Button("Start", GUILayout.Width(70)))
                 {
                     Messages.Log("Starting TheiaVR plugin");
@@ -182,6 +183,7 @@ namespace TheiaVR.Editor.UI
 
                     Messages.Log("TheiaVR correctly started");
                 }
+                EditorGUI.EndDisabledGroup();
             }
 
             if (started)
