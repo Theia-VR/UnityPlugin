@@ -1,35 +1,34 @@
 ﻿using System;
-using TheiaVR.Helpers;
-using TheiaVR.Model;
-using System.Collections;
 using System.Collections.Generic;
 using TheiaVR.Graphics;
+using TheiaVR.Model;
+using TheiaVR.Helpers;
 
 namespace TheiaVR.Controllers.Listeners
 {
-    class CloudListener : UDPStreamListener
+    class KinectListener : UDPStreamListener
     {
         private long timestamp;
-        private List<Vertex> cloud;
+        private int byteIndex;
+        private FrameBuffer buffer;
 
-        public CloudListener()
+        public KinectListener(FrameBuffer aBuffer, int aByteIndex)
         {
             timestamp = 0;
-            cloud = new List<Vertex>(3000);
+            buffer = aBuffer;
+            byteIndex = aByteIndex;
         }
-
+        
         public override void ParseStream(byte[] aBytes)
         {
+
             long vTimeStamp = BitConverter.ToInt64(aBytes, 0);
-            
             if (vTimeStamp > timestamp)
             {
-
                 if (aBytes.Length > 0)
                 {
-                    List<Vertex> vVertex = new List<Vertex>();
                     int vVertexIndex = 0;
-                    int vByteIndex = 8;
+                    int vByteIndex = byteIndex;
                     while (vByteIndex < aBytes.Length)
                     {
                         try
@@ -42,8 +41,8 @@ namespace TheiaVR.Controllers.Listeners
                             byte g = aBytes[vByteIndex + 13];
                             byte b = aBytes[vByteIndex + 14];
 
-                            cloud.Add(new Vertex(x, y, z, r, g, b));
-                       
+                            buffer.Queue(new Vertex(x, y, z, r, g, b));
+
                             vVertexIndex++;
                             vByteIndex += 16;
                         }
@@ -52,14 +51,8 @@ namespace TheiaVR.Controllers.Listeners
                             Messages.LogError("Cannot read Vertex number " + vVertexIndex + ": " + vError.Message);
                         }
                     }
-                    CloudRenderer.GetInstance().UpdatePositions(cloud);
                 }
             }
-            else
-            {
-                cloud.Clear();
-            }
-            
         }
     }
 }

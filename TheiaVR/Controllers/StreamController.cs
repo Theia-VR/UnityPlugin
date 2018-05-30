@@ -2,7 +2,6 @@
 using TheiaVR.Graphics;
 using TheiaVR.Controllers.Listeners;
 using UnityEditor;
-using System.Threading;
 
 namespace TheiaVR.Controllers
 {
@@ -31,14 +30,23 @@ namespace TheiaVR.Controllers
             return instance;
         }
         
-        public void Start(bool aStartSkeleton, bool aStartCloud)
+        public void Start(string aAddress, int aSkeletonPort, int aCloudPort, bool aStartSkeleton, bool aStartCloud)
         {
             if (skeleton == null && aStartSkeleton)
             {
                 if (SkeletonRenderer.GetInstance() != null)
                 {
-                    skeleton = new SkeletonListener();
-                    skeleton.Start(EditorPrefs.GetString("ip"), EditorPrefs.GetInt("skelPort"));
+                    FrameBuffer vBuffer = new FrameBuffer(25);
+                    Messages.Log("Skeleton buffer initialized");
+
+                    SkeletonRenderer.GetInstance().SetBuffer(vBuffer);
+                    Messages.Log("Skeleton buffer added to Skeleton renderer");
+
+                    skeleton = new KinectListener(vBuffer, 9);
+                    Messages.Log("SkeletonListener initialized");
+
+                    skeleton.Start(aAddress, aSkeletonPort);
+                    Messages.Log("SkeletonListener started");
                 }
                 else
                 {
@@ -50,8 +58,21 @@ namespace TheiaVR.Controllers
             {
                 if(CloudRenderer.GetInstance() != null)
                 {
-                    cloud = new CloudListener();
-                    cloud.Start(EditorPrefs.GetString("ip"), EditorPrefs.GetInt("cloudPort"));
+                    FrameBuffer vBuffer = new FrameBuffer(3000);//EditorPrefs.GetInt("pointAmount"));
+                    Messages.Log("Cloud buffer initialized");
+
+                    CloudRenderer.GetInstance().SetBuffer(vBuffer);
+                    Messages.Log("Cloud buffer added to Cloud renderer");
+
+                    cloud = new KinectListener(vBuffer, 8);
+                    Messages.Log("CloudListener initialized");
+
+                    cloud.Start(aAddress, aCloudPort);
+                    Messages.Log("CloudListener started");
+                }
+                else
+                {
+                    Messages.LogError("CloudRenderer is not activated. Please associate it to a game component and try again.");
                 }
             }
         }
@@ -62,12 +83,14 @@ namespace TheiaVR.Controllers
             {
                 skeleton.Stop();
                 skeleton = null;
+                Messages.Log("Skeleton listener stopped");
             }
 
             if (cloud != null && cloud.IsActive())
             {
                 cloud.Stop();
                 cloud = null;
+                Messages.Log("Cloud listener stopped");
             }
         }
 

@@ -45,23 +45,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\Listeners\CloudListener.cs" />
-    <Compile Include="Controllers\Listeners\SkeletonListener.cs" />
+    <Compile Include="Controllers\Listeners\KinectListener.cs" />
     <Compile Include="Controllers\StreamController.cs" />
     <Compile Include="Controllers\Listeners\StreamListener.cs" />
     <Compile Include="Controllers\Listeners\UDPStreamListener.cs" />
-    <Compile Include="Editor\UI\KinectPluginWindow.cs" />
+    <Compile Include="Editor\KinectPluginWindow.cs" />
     <Compile Include="Graphics\CloudRenderer.cs" />
+    <Compile Include="Graphics\FrameBuffer.cs" />
+    <Compile Include="Graphics\KinectRenderer.cs" />
     <Compile Include="Graphics\SkeletonRenderer.cs" />
     <Compile Include="Helpers\Messages.cs" />
     <Compile Include="Model\Vertex.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\cloud_materials.mat" />
-    <None Include="Resources\cloud_prefabs.prefab" />
-    <None Include="Resources\vertex_materials.mat" />
-    <None Include="Resources\Vertex_prefabs.prefab" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

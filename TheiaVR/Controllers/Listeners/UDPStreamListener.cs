@@ -7,7 +7,7 @@ using TheiaVR.Helpers;
 
 namespace TheiaVR.Controllers.Listeners
 {
-    abstract class UDPStreamListener : StreamListener
+    public abstract class UDPStreamListener : StreamListener
     {
         private Thread listener;
 
@@ -60,7 +60,6 @@ namespace TheiaVR.Controllers.Listeners
         {
             IPEndPoint vIPEndPoint = (IPEndPoint)aIPEndPoint;
             UdpClient vStreamer = new UdpClient(vIPEndPoint.Port);
-
             try
             {
                 while (listening)

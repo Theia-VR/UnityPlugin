@@ -9,7 +9,7 @@ namespace TheiaVRTests
         [Test]
         public void TestStart()
         {
-            StreamController.GetInstance().Start(true, false);
+            StreamController.GetInstance().Start("127.0.0.1", 9877, 9776, true, false);
 
             Assert.IsTrue(StreamController.GetInstance().IsActive());
         }
