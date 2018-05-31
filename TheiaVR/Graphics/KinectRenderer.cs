@@ -55,11 +55,20 @@ namespace TheiaVR.Graphics
                     if (vVertexs[i] != null)
                     {
                         gameObjects[i].transform.SetPositionAndRotation(vVertexs[i].GetVector(), Quaternion.identity);
+                        gameObjects[i].GetComponent<Renderer>().material.color = vVertexs[i].GetColor();
                     }
                 }
             }
         }
-        
+
+        public void DestroyAllObjects()
+        {
+            foreach (GameObject obj in gameObjects)
+            {
+                Destroy(obj);
+            }
+        }
+
         protected void OnApplicationQuit()
         {
             StreamController.GetInstance().Stop();
