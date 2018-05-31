@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace TheiaVR.Graphics
 {
+    
     public abstract class KinectRenderer : MonoBehaviour
     {
         private GameObject gameObject;
@@ -14,25 +15,18 @@ namespace TheiaVR.Graphics
 
         protected List<GameObject> gameObjects;
 
-        protected Mesh mesh;
-
         public void SetBuffer(FrameBuffer aBuffer){
             buffer = aBuffer;
             gameObjects = new List<GameObject>(buffer.GetLength());
         }
-
-        protected virtual void Start()
-        {
-            mesh = new Mesh();
-        }
-
+        
         protected void SetGameObject(GameObject aGameObject)
         {
             gameObject = aGameObject;
         }
         
         protected void Update()
-        {
+        {   
             if (buffer != null && gameObjects != null && gameObjects.Count <= 0 && buffer.IsFull())
             {
                 List<Vertex> vVertexs = buffer.DequeueAll();

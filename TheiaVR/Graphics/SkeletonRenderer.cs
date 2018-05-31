@@ -13,7 +13,7 @@ namespace TheiaVR.Graphics
 
         private new void Start()
         {
-            base.Start();
+//            base.Start();
             instance = this;
 
             GameObject vGameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
