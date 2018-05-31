@@ -58,7 +58,7 @@ namespace TheiaVR.Controllers
             {
                 if(CloudRenderer.GetInstance() != null)
                 {
-                    FrameBuffer vBuffer = new FrameBuffer(3000);//EditorPrefs.GetInt("pointAmount"));
+                    FrameBuffer vBuffer = new FrameBuffer(EditorPrefs.GetInt("pointAmount"));
                     Messages.Log("Cloud buffer initialized");
 
                     CloudRenderer.GetInstance().SetBuffer(vBuffer);

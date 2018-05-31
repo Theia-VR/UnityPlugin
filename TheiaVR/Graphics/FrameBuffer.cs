@@ -52,7 +52,7 @@ namespace TheiaVR.Graphics
         {
             lock (vertexs)
             {
-                if (!IsFull())
+                if (GetCount() < GetLength())
                 {
                     vertexs.Add(aVertex);
                 }
@@ -63,7 +63,7 @@ namespace TheiaVR.Graphics
         {
             lock (vertexs)
             {
-                if(GetCount() + aVertexs.Count < GetLength())
+                if(GetCount() + aVertexs.Count <= GetLength())
                 {
                     vertexs.AddRange(aVertexs);
                 }
@@ -99,8 +99,8 @@ namespace TheiaVR.Graphics
                 int vNbVertexs = Math.Min(vertexs.Count, aNbOfVertexs);
 
                 vVertexs = vertexs.GetRange(0, vNbVertexs);
-                vVertexs.RemoveRange(0, vNbVertexs);
-
+                vertexs.RemoveRange(0, vNbVertexs);
+                
                 return vVertexs;
             }
         }
