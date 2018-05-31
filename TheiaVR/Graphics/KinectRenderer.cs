@@ -59,7 +59,15 @@ namespace TheiaVR.Graphics
                 }
             }
         }
-        
+
+        public void DestroyAllObjects()
+        {
+            foreach (GameObject obj in gameObjects)
+            {
+                Destroy(obj);
+            }
+        }
+
         protected void OnApplicationQuit()
         {
             StreamController.GetInstance().Stop();

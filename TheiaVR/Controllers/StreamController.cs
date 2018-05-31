@@ -83,6 +83,7 @@ namespace TheiaVR.Controllers
             {
                 skeleton.Stop();
                 skeleton = null;
+                SkeletonRenderer.GetInstance().DestroyAllObjects();
                 Messages.Log("Skeleton listener stopped");
             }
 
@@ -90,6 +91,7 @@ namespace TheiaVR.Controllers
             {
                 cloud.Stop();
                 cloud = null;
+                CloudRenderer.GetInstance().DestroyAllObjects();
                 Messages.Log("Cloud listener stopped");
             }
         }
