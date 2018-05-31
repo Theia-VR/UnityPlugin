@@ -120,6 +120,7 @@ namespace TheiaVR.Editor
             pointAmount = EditorGUILayout.IntField("Points per frame", pointAmount);
 
             GUILayout.Label("Receiving", EditorStyles.boldLabel);
+            EditorGUI.BeginDisabledGroup(started);
             if (EditorGUILayout.Toggle("Cloud points", enablePointCloud) != enablePointCloud)
             {
                 enablePointCloud = !enablePointCloud;
@@ -145,7 +146,7 @@ namespace TheiaVR.Editor
                     DestroyImmediate(Camera.main.gameObject.GetComponent<SkeletonRenderer>());
                 }
             }
-
+            EditorGUI.EndDisabledGroup();
             GUILayout.Label("Logs", EditorStyles.boldLabel);
             if (EditorGUILayout.Toggle("Display Unity logs", enableUnityLogs) != enableUnityLogs)
             {
