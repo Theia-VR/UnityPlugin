@@ -8,12 +8,14 @@ Given a C# kinectStudio streamer to UDP network, Student project for streaming K
 
 # Team : 
 ## Tutor: Cedric Dumas
-## Students: Valentin Bourcier
-	  Alexis Delforges
-	  Baptiste Vrignaud
+## Students: Valentin Bourcier 
+Alexis Delforges
+Baptiste Vrignaud
 
 # Required Material
-## Hardware : Windows 10, Microsoft Kinect, UDP local network.
+## Hardware : Windows 10
+Microsoft Kinect
+UDP local network.
 ## Software : Kinect SDK 2.0, Kinect Studio 2.0, TheaiVr KinectStreamer, Unity 4.5.2, Visual Studio 2017, .NET Framework 3.5
 
 # Development Environment : 
