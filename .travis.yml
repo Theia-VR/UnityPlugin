@@ -2,7 +2,7 @@ language: csharp
 solution: TheiaVR.sln
 install:
   - nuget restore TheiaVR.sln
-  - nuget install NUnit.Runners -Version 3.10.1 -OutputDirectory TestsRunners
+  - nuget install NUnit.Runners -Version 3.6.1 -OutputDirectory TestsRunners
 script:
   - xbuild /p:Configuration=Release TheiaVR.sln
-  - mono ./TestsRunners/NUnit.ConsoleRunner.3.10.1/tools/nunit3-console.exe ./Editor/TheiaVRTests/bin/Release/TheiaVRTests.dll
+  - mono ./TestsRunners/NUnit.ConsoleRunner.3.6.1/tools/nunit3-console.exe ./Editor/TheiaVRTests/bin/Release/TheiaVRTests.dll
