@@ -31,7 +31,7 @@ namespace TheiaVR.Graphics
             renderer.sprite = vSprite;
 
             //Getting the correct scale
-            Vector3 vScale = new Vector3(0.5f, 0.5f, 0.5f);
+            Vector3 vScale = new Vector3(1.5f, 1.5f, 1.5f);
             vGameObject.transform.localScale = vScale;
 
             base.SetGameObject(vGameObject);

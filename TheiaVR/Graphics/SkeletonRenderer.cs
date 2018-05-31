@@ -18,7 +18,7 @@ namespace TheiaVR.Graphics
 
             GameObject vGameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             
-            Vector3 vScale = new Vector3(0.1f, 0.1f, 0.1f);
+            Vector3 vScale = new Vector3(0.05f, 0.05f, 0.05f);
             vGameObject.transform.localScale = vScale;
 
             base.SetGameObject(vGameObject);

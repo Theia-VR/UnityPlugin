@@ -55,6 +55,7 @@ namespace TheiaVR.Graphics
                     if (vVertexs[i] != null)
                     {
                         gameObjects[i].transform.SetPositionAndRotation(vVertexs[i].GetVector(), Quaternion.identity);
+                        gameObjects[i].GetComponent<Renderer>().material.color = vVertexs[i].GetColor();
                     }
                 }
             }
