@@ -105,7 +105,7 @@ namespace TheiaVR.Editor
             if (aState == PlayModeStateChange.ExitingPlayMode)
             {
                 DisplayStartUI();
-            }
+            } 
         }
 
         void OnGUI()
@@ -168,7 +168,7 @@ namespace TheiaVR.Editor
 
             if (stopped)
             {
-                EditorGUI.BeginDisabledGroup(!enablePointCloud && !enableSkeleton);
+                EditorGUI.BeginDisabledGroup(!enablePointCloud && !enableSkeleton || !EditorApplication.isPlaying);
                 if (GUILayout.Button("Start", GUILayout.Width(70)))
                 {
                     Messages.Log("Starting TheiaVR plugin");
