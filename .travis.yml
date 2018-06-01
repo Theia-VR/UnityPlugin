@@ -1,18 +1,8 @@
 language: csharp
-
 solution: TheiaVR.sln
-
 install:
   - nuget restore TheiaVR.sln
   - nuget install NUnit.Runners -Version 3.6.1 -OutputDirectory TestsRunners
-
-addons:
-  sonarcloud:
-    organization: "valentin-bourcier-github"
-    token:
-      secure: $SONAR_TOKEN
-
 script:
   - xbuild /p:Configuration=Release TheiaVR.sln
   - mono ./TestsRunners/NUnit.ConsoleRunner.3.6.1/tools/nunit3-console.exe ./Editor/TheiaVRTests/bin/Release/TheiaVRTests.dll
-  - sonar-scanner
