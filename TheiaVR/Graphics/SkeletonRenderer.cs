@@ -11,17 +11,14 @@ namespace TheiaVR.Graphics
             return instance;
         }
 
-        private new void Start()
+        private void Awake()
         {
-//            base.Start();
+            base.SetMesh(GetComponent<MeshFilter>().mesh);
+        }
+
+        private void Start()
+        {
             instance = this;
-
-            GameObject vGameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            
-            Vector3 vScale = new Vector3(0.05f, 0.05f, 0.05f);
-            vGameObject.transform.localScale = vScale;
-
-            base.SetGameObject(vGameObject);
         }
     }
 }

@@ -55,7 +55,7 @@
     <Compile Include="Graphics\KinectRenderer.cs" />
     <Compile Include="Graphics\SkeletonRenderer.cs" />
     <Compile Include="Helpers\Messages.cs" />
-    <Compile Include="Model\Vertex.cs" />
+    <Compile Include="Model\Frame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

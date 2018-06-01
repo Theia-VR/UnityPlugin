@@ -6,60 +6,34 @@ using UnityEngine;
 
 namespace TheiaVR.Graphics
 {
-    
+    [RequireComponent(typeof(MeshFilter))]
     public abstract class KinectRenderer : MonoBehaviour
     {
-        private GameObject gameObject;
+        protected Mesh mesh;
 
         protected FrameBuffer buffer;
 
         protected List<GameObject> gameObjects;
 
+        protected void SetMesh(Mesh aMesh)
+        {
+            mesh = aMesh;
+        }
+
         public void SetBuffer(FrameBuffer aBuffer){
             buffer = aBuffer;
-            gameObjects = new List<GameObject>(buffer.GetLength());
-        }
-        
-        protected void SetGameObject(GameObject aGameObject)
-        {
-            gameObject = aGameObject;
         }
         
         protected void Update()
-        {   
-            if (buffer != null && gameObjects != null && gameObjects.Count <= 0 && buffer.IsFull())
-            {
-                List<Vertex> vVertexs = buffer.DequeueAll();
-                for (int i = 0; i < vVertexs.Count; i++)
-                {
-                    if (vVertexs[i] != null)
-                    {
-                        GameObject vGameObject = Instantiate(gameObject, vVertexs[i].GetVector(), Quaternion.identity);
-                        vGameObject.GetComponent<Renderer>().material.color = vVertexs[i].GetColor();
-
-                        gameObjects.Add(vGameObject);
-                    }
-                }
-            }
-            else if (gameObjects != null && buffer != null && buffer.IsFull())
-            {
-                List<Vertex> vVertexs = buffer.DequeueAll();
-                for (int i = 0; i < vVertexs.Count; i++)
-                {
-                    if (vVertexs[i] != null)
-                    {
-                        gameObjects[i].transform.SetPositionAndRotation(vVertexs[i].GetVector(), Quaternion.identity);
-                        gameObjects[i].GetComponent<Renderer>().material.color = vVertexs[i].GetColor();
-                    }
-                }
-            }
-        }
-
-        public void DestroyAllObjects()
         {
-            foreach (GameObject obj in gameObjects)
+            if (buffer != null && !buffer.IsEmpty())
             {
-                Destroy(obj);
+                Frame vFrame = buffer.Dequeue();
+
+                mesh.Clear();
+                mesh.vertices = vFrame.GetVectors();
+                mesh.colors = vFrame.GetColors();
+                mesh.SetIndices(vFrame.GetIndices(), MeshTopology.Points, 0);
             }
         }
 

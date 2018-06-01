@@ -36,7 +36,7 @@ namespace TheiaVR.Controllers
             {
                 if (SkeletonRenderer.GetInstance() != null)
                 {
-                    FrameBuffer vBuffer = new FrameBuffer(25);
+                    FrameBuffer vBuffer = new FrameBuffer();
                     Messages.Log("Skeleton buffer initialized");
 
                     SkeletonRenderer.GetInstance().SetBuffer(vBuffer);
@@ -58,7 +58,7 @@ namespace TheiaVR.Controllers
             {
                 if(CloudRenderer.GetInstance() != null)
                 {
-                    FrameBuffer vBuffer = new FrameBuffer(EditorPrefs.GetInt("pointAmount"));
+                    FrameBuffer vBuffer = new FrameBuffer();
                     Messages.Log("Cloud buffer initialized");
 
                     CloudRenderer.GetInstance().SetBuffer(vBuffer);
@@ -83,7 +83,6 @@ namespace TheiaVR.Controllers
             {
                 skeleton.Stop();
                 skeleton = null;
-                SkeletonRenderer.GetInstance().DestroyAllObjects();
                 Messages.Log("Skeleton listener stopped");
             }
 
@@ -91,7 +90,6 @@ namespace TheiaVR.Controllers
             {
                 cloud.Stop();
                 cloud = null;
-                CloudRenderer.GetInstance().DestroyAllObjects();
                 Messages.Log("Cloud listener stopped");
             }
         }

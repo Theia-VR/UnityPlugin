@@ -6,120 +6,47 @@ namespace TheiaVR.Graphics
 {
     public class FrameBuffer
     {
-        private int vertexNumber;
+        private long timestamp;
 
-        private List<Vertex> vertexs;
+        private Frame frame;
 
-        public FrameBuffer(int aNbOfVertexs)
+        private List<Frame> frames;
+
+        public FrameBuffer()
         {
-            vertexNumber = aNbOfVertexs;
-            vertexs = new List<Vertex>(aNbOfVertexs);
-        }
-
-        public int GetLength()
-        {
-            lock (vertexs)
-            {
-                return vertexNumber;
-            }
-        }
-
-        public int GetCount()
-        {
-            lock (vertexs)
-            {
-                return vertexs.Count;
-            }
+            timestamp = 0;
+            frame = new Frame();
+            frames = new List<Frame>();
         }
 
         public bool IsEmpty()
         {
-            lock (vertexs)
-            {
-                return GetCount() <= 0;
-            }
+            return frames.Count <= 0;
         }
 
-        public bool IsFull()
+        public void AddPoint(long aTimeStamp, float aX, float aY, float aZ, byte aR, byte aG, byte aB)
         {
-            lock (vertexs)
+            if (aTimeStamp > timestamp)
             {
-                return GetCount() >= GetLength();
+                timestamp = aTimeStamp;
+                frames.Add(frame);
+                frame = new Frame();
             }
+
+            frame.AddPoint(aX, aY, aZ, aR, aG, aB);
         }
 
-        public void Queue(Vertex aVertex)
+
+        public Frame Dequeue()
         {
-            lock (vertexs)
+            if (IsEmpty())
             {
-                if (GetCount() < GetLength())
-                {
-                    vertexs.Add(aVertex);
-                }
+                throw new Exception("Frame buffer is empty, cannot dequeue");
             }
+
+            Frame vFrame = frames[0];
+            frames.RemoveAt(0);
+            return vFrame;
         }
-
-        public void Queue(ICollection<Vertex> aVertexs)
-        {
-            lock (vertexs)
-            {
-                if(GetCount() + aVertexs.Count <= GetLength())
-                {
-                    vertexs.AddRange(aVertexs);
-                }
-            }
-        }
-
-        public Vertex Dequeue()
-        {
-            lock (vertexs)
-            {
-                Vertex vVertex = null;
-                if (IsEmpty())
-                {
-                    throw new Exception("Buffer is empty");
-                }
-                vVertex = vertexs[0];
-                vertexs.RemoveRange(0, 1);
-                return vVertex;
-            }
-        }
-
-        public List<Vertex> Dequeue(int aNbOfVertexs)
-        {
-            lock (vertexs)
-            {
-                List<Vertex> vVertexs = null;
-
-                if (IsEmpty())
-                {
-                    throw new Exception("Buffer is empty");
-                }
-
-                int vNbVertexs = Math.Min(vertexs.Count, aNbOfVertexs);
-
-                vVertexs = vertexs.GetRange(0, vNbVertexs);
-                vertexs.RemoveRange(0, vNbVertexs);
-                
-                return vVertexs;
-            }
-        }
-
-        public List<Vertex> DequeueAll()
-        {
-            lock (vertexs)
-            {
-                if (IsEmpty())
-                {
-                    throw new Exception("Buffer is empty");
-                }
-
-                List<Vertex> vVertexs = new List<Vertex>(vertexs);
-                vertexs.Clear();
-
-                return vVertexs;
-            }
-        }
-        
     }
 }
