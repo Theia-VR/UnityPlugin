@@ -19,6 +19,8 @@ namespace TheiaVR.Editor
         private bool started;
         private bool stopped;
 
+        public GameObject cloudMesh;
+
         // Add menu item named "Kinect Plugin" to the Window menu
         [MenuItem("Kinect Plugin/Show plugin")]
         public static void ShowWindow()
@@ -73,10 +75,20 @@ namespace TheiaVR.Editor
         }
 
         private void AddCloudRenderer()
-        {
-            if (Camera.main.gameObject.GetComponent<CloudRenderer>() == null)
+        {            
+            if (GameObject.Find("CloudMesh") == null && GameObject.Find("CloudMesh(Clone)") == null)
             {
-                Camera.main.gameObject.AddComponent<CloudRenderer>();
+                cloudMesh = Resources.Load("CloudMesh", typeof(GameObject)) as GameObject;
+                Instantiate(cloudMesh);
+            }
+        }
+
+        private void RemoveCloudRenderer()
+        {
+            GameObject vCloudMesh = GameObject.Find("CloudMesh(Clone)");
+            if (vCloudMesh)
+            {
+                DestroyImmediate(vCloudMesh.gameObject);
             }
         }
 
@@ -105,20 +117,19 @@ namespace TheiaVR.Editor
             if (aState == PlayModeStateChange.ExitingPlayMode)
             {
                 DisplayStartUI();
-            } 
+            }
         }
 
         void OnGUI()
+
         {
             // Listening to play button
             EditorApplication.playModeStateChanged += CheckPlayModeState;
-
             GUILayout.Label("Network settings", EditorStyles.boldLabel);
             ip = EditorGUILayout.TextField("IP Address", ip);
             cloudPort = EditorGUILayout.IntField("Cloud port", cloudPort);
             skelPort = EditorGUILayout.IntField("Skeleton port", skelPort);
             pointAmount = EditorGUILayout.IntField("Points per frame", pointAmount);
-
             GUILayout.Label("Receiving", EditorStyles.boldLabel);
             EditorGUI.BeginDisabledGroup(started);
             if (EditorGUILayout.Toggle("Cloud points", enablePointCloud) != enablePointCloud)
@@ -130,7 +141,8 @@ namespace TheiaVR.Editor
                 }
                 else
                 {
-                    DestroyImmediate(Camera.main.gameObject.GetComponent<CloudRenderer>());
+//                    DestroyImmediate(Camera.main.gameObject.GetComponent<CloudRenderer>());
+                    RemoveCloudRenderer();
                 }
             }
 
@@ -141,11 +153,13 @@ namespace TheiaVR.Editor
                 {
                     AddSkeletonRenderer();
                 }
+
                 else
                 {
                     DestroyImmediate(Camera.main.gameObject.GetComponent<SkeletonRenderer>());
                 }
             }
+
             EditorGUI.EndDisabledGroup();
             GUILayout.Label("Logs", EditorStyles.boldLabel);
             if (EditorGUILayout.Toggle("Display Unity logs", enableUnityLogs) != enableUnityLogs)
@@ -155,6 +169,7 @@ namespace TheiaVR.Editor
                 {
                     Messages.EnableUnityLogs();
                 }
+
                 else
                 {
                     Messages.DisableUnityLogs();
@@ -165,7 +180,6 @@ namespace TheiaVR.Editor
             EditorGUILayout.Separator();
             EditorGUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-
             if (stopped)
             {
                 EditorGUI.BeginDisabledGroup(!enablePointCloud && !enableSkeleton || !EditorApplication.isPlaying);
@@ -184,6 +198,7 @@ namespace TheiaVR.Editor
 
                     Messages.Log("TheiaVR correctly started");
                 }
+
                 EditorGUI.EndDisabledGroup();
             }
 
@@ -208,5 +223,4 @@ namespace TheiaVR.Editor
             EditorGUILayout.EndHorizontal();
         }
     }
-
 }
