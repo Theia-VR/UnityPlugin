@@ -26,7 +26,7 @@ namespace TheiaVR.Model
         public void AddPoint(float aX, float aY, float aZ, byte aR, byte aG, byte aB)
         {
             vectors.Add(new Vector3(aX, aY, aZ));
-            colors.Add(new Color(aR, aG, aB));
+            colors.Add(new Color(aR / 255f, aG / 255f, aB / 255f));
             indices.Add(indices.Count);
         }
         
