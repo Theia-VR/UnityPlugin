@@ -18,9 +18,10 @@ namespace TheiaVR.Controllers.Listeners
         
         public override void ParseStream(byte[] aBytes)
         {
-            long vTimeStamp = BitConverter.ToInt64(aBytes, 0);
             if (aBytes.Length - byteIndex > 0)
             {
+                long vTimeStamp = BitConverter.ToInt64(aBytes, 0);
+
                 int vVertexIndex = 0;
                 int vByteIndex = byteIndex;
 
