@@ -288,6 +288,11 @@ namespace TheiaVR.Editor
                 if (GUILayout.Button("Delete", widthTable[5]))
                 {
                     networkConfigs.RemoveAt(i);
+                    EditorPrefs.DeleteKey("ipAddress" + i);
+                    EditorPrefs.DeleteKey("cloudPort" + i);
+                    EditorPrefs.DeleteKey("skelPort" + i);
+                    EditorPrefs.DeleteKey("enableCloud" + i);
+                    EditorPrefs.DeleteKey("enableSkel" + i);
                 }
                 
 
