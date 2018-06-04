@@ -2,14 +2,17 @@
 {
     public class NetworkConfig
     {
-        public NetworkConfig(string ipAddress, int cloudPort, int skelPort, bool enableCloud, bool enableSkel)
+        public NetworkConfig(int id, string ipAddress, int cloudPort, int skelPort, bool enableCloud, bool enableSkel)
         {
+            this.Id = id;
             this.IpAddress = ipAddress;
             this.CloudPort = cloudPort;
             this.SkelPort = skelPort;
             this.EnableCloud = enableCloud;
             this.EnableSkel = enableSkel;
         }
+        
+        public int Id { get; set; }
         
         public string IpAddress { get; set; }
 

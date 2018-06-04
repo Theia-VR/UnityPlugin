@@ -62,7 +62,7 @@ namespace TheiaVR.Editor
                     AddSkeletonRenderer();
                 }
 
-                networkConfigs.Add(new NetworkConfig(ipAddress, cloudPort, skelPort, enableCloud, enableSkel));
+                networkConfigs.Add(new NetworkConfig(i,ipAddress, cloudPort, skelPort, enableCloud, enableSkel));
             }
         }
 
@@ -320,7 +320,7 @@ namespace TheiaVR.Editor
             EditorGUI.BeginDisabledGroup(started);
             if (GUILayout.Button("Add a new Kinect"))
             {
-                networkConfigs.Add(new NetworkConfig("127.0.0.1", 9876, 9877, true, false));
+                networkConfigs.Add(new NetworkConfig(networkConfigs.Count, "127.0.0.1", 9876, 9877, true, false));
             }
             EditorGUI.EndDisabledGroup();
             GUILayout.FlexibleSpace();
