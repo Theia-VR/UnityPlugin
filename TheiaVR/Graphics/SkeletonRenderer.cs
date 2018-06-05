@@ -7,6 +7,8 @@ namespace TheiaVR.Graphics
     public class SkeletonRenderer : KinectRenderer
     {
         private GameObject gameObject;
+
+        private GameObject parent;
         
         private List<GameObject> gameObjects;
         
@@ -17,6 +19,10 @@ namespace TheiaVR.Graphics
             gameObjects = new List<GameObject>();
         }
 
+        public void SetParent(GameObject aParent){
+            parent = aParent;
+        }
+        
         private new void Update()
         {
             
@@ -30,7 +36,9 @@ namespace TheiaVR.Graphics
                 {
                     for (int i = 0; i < positions.Length; i++)
                     {
-                        gameObjects.Add(Instantiate(gameObject, positions[i], Quaternion.identity));
+                        GameObject newCube = Instantiate(gameObject, positions[i], Quaternion.identity);
+                        newCube.transform.parent = parent.transform;
+                        gameObjects.Add(newCube);
                     }
                 }
                 else if (gameObjects != null && positions != null && positions.Length > 0)

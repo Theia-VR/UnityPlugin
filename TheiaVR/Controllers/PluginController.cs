@@ -108,6 +108,7 @@ namespace TheiaVR.Controllers
 
                         skeletonRenderers.Add(vConfig.Id, vSkeleton.GetComponent<SkeletonRenderer>());
                         skeletonRenderers[vConfig.Id].SetBuffer(vBuffer);
+                        skeletonRenderers[vConfig.Id].SetParent(vSkeleton);
 
                         skeletonListener = new KinectListener(vBuffer, 9);
 
