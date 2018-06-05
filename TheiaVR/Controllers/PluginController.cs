@@ -11,25 +11,19 @@ namespace TheiaVR.Controllers
     public class PluginController
     {
         private static PluginController instance = null;
+        
+        private Dictionary<int, GameObject> meshes;
+        private Dictionary<int, KinectListener> cloudListeners;
 
-        private Dictionary<int, NetworkConfig> kinectConfigs;
-
-        private Dictionary<int, KinectListener> listeners;
-
+        private GameObject skeletonObject;
         private KinectListener skeletonListener;
         
-        private Dictionary<int, CloudRenderer> cloudRenderers;
-
-        private Dictionary<int, SkeletonRenderer> skeletonRenderers;
-
         private bool listening;
 
         private PluginController() {
 
-            kinectConfigs = new Dictionary<int, NetworkConfig>();
-            listeners = new Dictionary<int, KinectListener>();
-            cloudRenderers = new Dictionary<int, CloudRenderer>();
-            skeletonRenderers = new Dictionary<int, SkeletonRenderer>();
+            cloudListeners = new Dictionary<int, KinectListener>();
+            meshes = new Dictionary<int, GameObject>();
 
             listening = false;
         }
@@ -43,107 +37,103 @@ namespace TheiaVR.Controllers
             return instance;
         }
         
-        public void SetKinectConfiguration(NetworkConfig aKinectNetworkConfig)
-        {
-            if (kinectConfigs.ContainsKey(aKinectNetworkConfig.Id))
-            {
-                kinectConfigs[aKinectNetworkConfig.Id] = aKinectNetworkConfig;
-            }
-            else
-            {
-                kinectConfigs.Add(aKinectNetworkConfig.Id, aKinectNetworkConfig);
-            }
-        }
-
-        public void SetKinectConfigurations(List<NetworkConfig> aKinectNetworkConfigs)
+        public void Start(List<NetworkConfig> aKinectNetworkConfigs)
         {
             foreach (NetworkConfig vKinectConfig in aKinectNetworkConfigs)
             {
-                SetKinectConfiguration(vKinectConfig);
+                Start(vKinectConfig);
             }
         }
 
-        public void Start()
+        public void Start(NetworkConfig aNetworkConfig)
         {
-            foreach (NetworkConfig vConfig in kinectConfigs.Values)
+            if (aNetworkConfig.EnableCloud)
             {
-                if (vConfig.EnableCloud)
+                if (!meshes.ContainsKey(aNetworkConfig.Id) && !cloudListeners.ContainsKey(aNetworkConfig.Id))
                 {
-                    if (GameObject.Find("Kinect - " + vConfig.Id + " - CR") == null)
-                    {
-                        GameObject vCloudMesh = Resources.Load("Cloud", typeof(GameObject)) as GameObject;
-                        vCloudMesh = MonoBehaviour.Instantiate(vCloudMesh);
-                        vCloudMesh.name = "Kinect - " + vConfig.Id + " - CR";
-                        vCloudMesh.AddComponent<CloudRenderer>();
+                    GameObject vCloudMesh = Resources.Load("Cloud", typeof(GameObject)) as GameObject;
+                    vCloudMesh = MonoBehaviour.Instantiate(vCloudMesh);
+                    vCloudMesh.name = "Kinect - " + aNetworkConfig.Id + " - CR";
+                    vCloudMesh.AddComponent<CloudRenderer>();
 
-                        FrameBuffer vBuffer = new FrameBuffer();
-                        Messages.Log("IP: " + vConfig.IpAddress);
+                    FrameBuffer vBuffer = new FrameBuffer();
 
-                        cloudRenderers.Add(vConfig.Id, vCloudMesh.GetComponent<CloudRenderer>() as CloudRenderer);
-                        cloudRenderers[vConfig.Id].SetBuffer(vBuffer);
+                    vCloudMesh.GetComponent<CloudRenderer>().SetBuffer(vBuffer);
+
+                    meshes.Add(aNetworkConfig.Id, vCloudMesh);
                         
-                        listeners.Add(vConfig.Id, new KinectListener(vBuffer, 8));
+                    cloudListeners.Add(aNetworkConfig.Id, new KinectListener(vBuffer, 8));
 
-                        listeners[vConfig.Id].Start(vConfig.IpAddress, vConfig.CloudPort);
+                    Messages.Log("Launching cloud listener: " + aNetworkConfig.IpAddress + ", " + aNetworkConfig.CloudPort);
+                    cloudListeners[aNetworkConfig.Id].Start(aNetworkConfig.IpAddress, aNetworkConfig.CloudPort);
+                    Messages.Log("Cloud listener started for Kinect n°" + aNetworkConfig.Id);
 
-                        listening = true;
-                    }
-                    else
-                    {
-                        throw new Exception("Conflict, a cloud mesh is already instanciated for this kinect");
-                    }
-
+                    listening = true;
+                }
+                else
+                {
+                    throw new Exception("Conflict, a cloud mesh is already instanciated for this kinect");
                 }
 
-                if (vConfig.EnableSkel && skeletonListener == null)
+            }
+
+            if (aNetworkConfig.EnableSkel)
+            {
+                if (skeletonObject == null && skeletonListener == null)
                 {
-                    if (GameObject.Find("Kinect - " + vConfig.Id + " - SR") == null)
-                    {
-                        GameObject vSkeleton = Resources.Load("Skeleton", typeof(GameObject)) as GameObject;
-                        vSkeleton = MonoBehaviour.Instantiate(vSkeleton);
-                        vSkeleton.name = "Kinect - " + vConfig.Id + " - SR";
-                        vSkeleton.AddComponent<SkeletonRenderer>();
+                    skeletonObject = Resources.Load("Skeleton", typeof(GameObject)) as GameObject;
+                    skeletonObject = MonoBehaviour.Instantiate(skeletonObject);
+                    skeletonObject.name = "Kinect - " + aNetworkConfig.Id + " - SR";
+                    skeletonObject.AddComponent<SkeletonRenderer>();
 
-                        FrameBuffer vBuffer = new FrameBuffer();
+                    FrameBuffer vBuffer = new FrameBuffer();
 
-                        skeletonRenderers.Add(vConfig.Id, vSkeleton.GetComponent<SkeletonRenderer>());
-                        skeletonRenderers[vConfig.Id].SetBuffer(vBuffer);
-                        skeletonRenderers[vConfig.Id].SetParent(vSkeleton);
+                    skeletonObject.GetComponent<SkeletonRenderer>().SetBuffer(vBuffer);
+                    skeletonObject.GetComponent<SkeletonRenderer>().SetParent(skeletonObject);
 
-                        skeletonListener = new KinectListener(vBuffer, 9);
+                    skeletonListener = new KinectListener(vBuffer, 9);
 
-                        skeletonListener.Start(vConfig.IpAddress, vConfig.SkelPort);
+                    Messages.Log("Launching skeleton listener: " + aNetworkConfig.IpAddress + ", " + aNetworkConfig.SkelPort);
+                    skeletonListener.Start(aNetworkConfig.IpAddress, aNetworkConfig.SkelPort);
+                    Messages.Log("Skeleton listener started for Kinect n°" + aNetworkConfig.Id);
 
-                        listening = true;
-                    }
-                    else
-                    {
-                        throw new Exception("Conflict, a skeleton object is already instanciated for this kinect");
-                    }
+                    listening = true;
+                }
+                else
+                {
+                    throw new Exception("Conflict, a skeleton object is already instanciated for this kinect");
                 }
             }
         }
 
         public void Stop()
         {
-            foreach (NetworkConfig vConfig in kinectConfigs.Values)
+
+            foreach (KeyValuePair<int, GameObject> vCloudInfos in meshes)
             {
-                if (listeners.ContainsKey(vConfig.Id))
+                if (cloudListeners.ContainsKey(vCloudInfos.Key))
                 {
-                    listeners[vConfig.Id].Stop();
-
-                    if (cloudRenderers.ContainsKey(vConfig.Id))
-                    {
-                        MonoBehaviour.DestroyImmediate(cloudRenderers[vConfig.Id]);
-                    }
-
-                    if (skeletonRenderers.ContainsKey(vConfig.Id))
-                    {
-                        MonoBehaviour.DestroyImmediate(skeletonRenderers[vConfig.Id]);
-                        skeletonListener = null;
-                    }
+                    cloudListeners[vCloudInfos.Key].Stop();
+                    cloudListeners.Remove(vCloudInfos.Key);
                 }
+                MonoBehaviour.DestroyImmediate(vCloudInfos.Value);
+
+                Messages.Log("Cloud treatment stopped for Kinect n°" + vCloudInfos.Key);
             }
+
+            meshes.Clear();
+            
+            if (skeletonListener != null && skeletonObject != null)
+            {
+                skeletonListener.Stop();
+                MonoBehaviour.DestroyImmediate(skeletonObject);
+
+                skeletonListener = null;
+                skeletonObject = null;
+                Messages.Log("Skeleton treatment stopped");
+
+            }
+
             listening = false;
         }
 

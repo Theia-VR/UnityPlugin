@@ -193,9 +193,7 @@ namespace TheiaVR.Editor
                     Messages.Log("Starting TheiaVR plugin");
                     try
                     {
-                        
-                        PluginController.GetInstance().SetKinectConfigurations(networkConfigs);
-                        PluginController.GetInstance().Start();
+                        PluginController.GetInstance().Start(networkConfigs);
                         
                         DisplayStopUI();
                     }
