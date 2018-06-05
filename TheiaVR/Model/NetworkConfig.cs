@@ -1,4 +1,4 @@
-﻿namespace TheiaVR.Editor
+﻿namespace TheiaVR.Model
 {
     public class NetworkConfig
     {

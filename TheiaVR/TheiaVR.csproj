@@ -46,17 +46,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\Listeners\KinectListener.cs" />
-    <Compile Include="Controllers\StreamController.cs" />
     <Compile Include="Controllers\Listeners\StreamListener.cs" />
     <Compile Include="Controllers\Listeners\UDPStreamListener.cs" />
+    <Compile Include="Controllers\PluginController.cs" />
     <Compile Include="Editor\KinectPluginWindow.cs" />
-    <Compile Include="Editor\NetworkConfig.cs" />
     <Compile Include="Graphics\CloudRenderer.cs" />
     <Compile Include="Graphics\FrameBuffer.cs" />
     <Compile Include="Graphics\KinectRenderer.cs" />
     <Compile Include="Graphics\SkeletonRenderer.cs" />
     <Compile Include="Helpers\Messages.cs" />
     <Compile Include="Model\Frame.cs" />
+    <Compile Include="Model\NetworkConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

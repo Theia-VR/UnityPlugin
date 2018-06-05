@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TheiaVR.Controllers;
 using TheiaVR.Graphics;
 using TheiaVR.Helpers;
+using TheiaVR.Model;
 using UnityEngine;
 using UnityEditor;
 
@@ -54,12 +55,12 @@ namespace TheiaVR.Editor
 
                 if (enableCloud)
                 {
-                    AddCloudRenderer();
+                    //AddCloudRenderer();
                 }
 
                 if (enableSkel)
                 {
-                    AddSkeletonRenderer();
+                    //AddSkeletonRenderer();
                 }
 
                 networkConfigs.Add(new NetworkConfig(i,ipAddress, cloudPort, skelPort, enableCloud, enableSkel));
@@ -83,7 +84,7 @@ namespace TheiaVR.Editor
 
         private void Awake()
         {
-            if (StreamController.GetInstance().IsActive())
+            if (PluginController.GetInstance().IsActive())
             {
                 DisplayStopUI();
                 Messages.Log("Displaying stop");
@@ -192,15 +193,10 @@ namespace TheiaVR.Editor
                     Messages.Log("Starting TheiaVR plugin");
                     try
                     {
-                        foreach (var conf in networkConfigs)
-                        {
-                            if (conf.EnableCloud || conf.EnableSkel)
-                            {
-                                StreamController.GetInstance().StartListener(conf.IpAddress, conf.SkelPort, conf.CloudPort, conf.EnableSkel,
-                                    conf.EnableCloud);
-                            }
-                        }
-
+                        
+                        PluginController.GetInstance().SetKinectConfigurations(networkConfigs);
+                        PluginController.GetInstance().Start();
+                        
                         DisplayStopUI();
                     }
                     catch (Exception vException)
@@ -221,7 +217,7 @@ namespace TheiaVR.Editor
                     Messages.Log("Stopping TheiaVR plugin");
                     try
                     {
-                        StreamController.GetInstance().Stop();
+                        PluginController.GetInstance().Stop();
                         DisplayStartUI();
                     }
                     catch (Exception vException)
@@ -255,11 +251,11 @@ namespace TheiaVR.Editor
                     networkConfigs[i].EnableCloud = !networkConfigs[i].EnableCloud;
                     if (networkConfigs[i].EnableCloud)
                     {
-                        AddCloudRenderer();
+                        //AddCloudRenderer();
                     }
                     else
                     {
-                        RemoveCloudRenderer();
+                        //RemoveCloudRenderer();
                     }
                 }
 

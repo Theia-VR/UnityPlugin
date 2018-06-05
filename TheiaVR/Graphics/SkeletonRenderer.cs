@@ -4,31 +4,20 @@ using UnityEngine;
 
 namespace TheiaVR.Graphics
 {
-    public class SkeletonRenderer : MonoBehaviour
+    public class SkeletonRenderer : KinectRenderer
     {
-        public GameObject gameObject;
+        private GameObject gameObject;
         
         private List<GameObject> gameObjects;
         
-        protected FrameBuffer buffer;
-
-        
-        public void SetBuffer(FrameBuffer aBuffer){
-            buffer = aBuffer;
-        }
-
-        public void Start()
+        private void Awake()
         {
-            gameObjects = new List<GameObject>();
-//            gameObject = Resources.Load("Vertex_prefabs", typeof(GameObject)) as GameObject;
+            gameObject = Resources.Load("Vertex_prefabs", typeof(GameObject)) as GameObject;
 
-//            for(int i=0; i < 25; i++)
-//            {
-//                gameObjects.Add(Instantiate(gameObject));
-//            }
+            gameObjects = new List<GameObject>();
         }
 
-        void Update()
+        private new void Update()
         {
             
             if (buffer != null && !buffer.IsEmpty())
@@ -52,20 +41,7 @@ namespace TheiaVR.Graphics
                     }
                 }
             }
-            
-//            if (gameObjects != null && positions != null && positions.Count > 0)
-//            {
-//                for (int i = 0; i < gameObjects.Count; i++)
-//                {
-//                    gameObjects[i].transform.SetPositionAndRotation(positions[i].GetVector(), Quaternion.identity);
-//                }
-//            }
         }
-//
-//        public void UpdatePositions(List<Vertex> aVertex)
-//        {
-//            positions = aVertex;
-//        }
     }
 }
 

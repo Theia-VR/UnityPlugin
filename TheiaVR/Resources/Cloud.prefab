@@ -21,9 +21,8 @@ GameObject:
   - component: {fileID: 4930073280741134}
   - component: {fileID: 33556506750549674}
   - component: {fileID: 23976914926048444}
-  - component: {fileID: 114009898602412990}
   m_Layer: 0
-  m_Name: CloudMesh
+  m_Name: Cloud
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57,7 +56,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 4ce1695edc7399e468138015b0eadd20, type: 2}
+  - {fileID: 2100000, guid: ef948ebd8611f1748a1e8e88b657fc0e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -84,14 +83,3 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1892362645062762}
   m_Mesh: {fileID: 0}
---- !u!114 &114009898602412990
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1892362645062762}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4fe554a79501a5a4e991dd9d10fd27eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
