@@ -2,6 +2,7 @@
 using TheiaVR.Graphics;
 using TheiaVR.Controllers.Listeners;
 using UnityEditor;
+using UnityEngine;
 
 namespace TheiaVR.Controllers
 {
@@ -12,7 +13,7 @@ namespace TheiaVR.Controllers
     {
         private static StreamController instance = null;
 
-        private UDPStreamListener skeleton;
+        private UDPStreamListener skeletonListener;
 
         private UDPStreamListener cloud;
 
@@ -30,22 +31,24 @@ namespace TheiaVR.Controllers
             return instance;
         }
         
-        public void Start(string aAddress, int aSkeletonPort, int aCloudPort, bool aStartSkeleton, bool aStartCloud)
+        public void StartListener(string aAddress, int aSkeletonPort, int aCloudPort, bool aStartSkeleton, bool aStartCloud)
         {
-            if (skeleton == null && aStartSkeleton)
+            if (skeletonListener == null && aStartSkeleton)
             {
-                if (SkeletonRenderer.GetInstance() != null)
+                if (true)
                 {
                     FrameBuffer vBuffer = new FrameBuffer();
                     Messages.Log("Skeleton buffer initialized");
 
-                    SkeletonRenderer.GetInstance().SetBuffer(vBuffer);
+                    GameObject skeleton = Object.Instantiate(Resources.Load("Skeleton", typeof(GameObject)) as GameObject);
+                    skeleton.name = "Skeleton";
+                    skeleton.GetComponent<SkeletonRenderer>().SetBuffer(vBuffer);
                     Messages.Log("Skeleton buffer added to Skeleton renderer");
 
-                    skeleton = new KinectListener(vBuffer, 9);
+                    skeletonListener = new KinectListener(vBuffer, 9);
                     Messages.Log("SkeletonListener initialized");
 
-                    skeleton.Start(aAddress, aSkeletonPort);
+                    skeletonListener.Start(aAddress, aSkeletonPort);
                     Messages.Log("SkeletonListener started");
                 }
                 else
@@ -79,10 +82,10 @@ namespace TheiaVR.Controllers
 
         public void Stop()
         {
-            if (skeleton != null && skeleton.IsActive())
+            if (skeletonListener != null && skeletonListener.IsActive())
             {
-                skeleton.Stop();
-                skeleton = null;
+                skeletonListener.Stop();
+                skeletonListener = null;
                 Messages.Log("Skeleton listener stopped");
             }
 
@@ -96,7 +99,7 @@ namespace TheiaVR.Controllers
 
         public bool IsActive()
         {
-            return (skeleton != null && skeleton.IsActive()) || (cloud != null && cloud.IsActive());
+            return (skeletonListener != null && skeletonListener.IsActive()) || (cloud != null && cloud.IsActive());
         }
     }
 }

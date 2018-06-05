@@ -100,7 +100,8 @@ namespace TheiaVR.Editor
             if (GameObject.Find("CloudMesh") == null && GameObject.Find("CloudMesh(Clone)") == null)
             {
                 cloudMesh = Resources.Load("CloudMesh", typeof(GameObject)) as GameObject;
-                Instantiate(cloudMesh);
+                GameObject gameObject = Instantiate(cloudMesh);
+                gameObject.name = "CloudMesh1";
             }
         }
 
@@ -123,10 +124,10 @@ namespace TheiaVR.Editor
 
         private void AddSkeletonRenderer()
         {
-            if (Camera.main.gameObject.GetComponent<SkeletonRenderer>() == null)
-            {
-                Camera.main.gameObject.AddComponent<SkeletonRenderer>();
-            }
+//            if (Camera.main.gameObject.GetComponent<SkeletonRenderer>() == null)
+//            {
+//                Camera.main.gameObject.AddComponent<SkeletonRenderer>();
+//            }
         }
 
         private void DisplayStartUI()
@@ -195,7 +196,7 @@ namespace TheiaVR.Editor
                         {
                             if (conf.EnableCloud || conf.EnableSkel)
                             {
-                                StreamController.GetInstance().Start(conf.IpAddress, conf.SkelPort, conf.CloudPort, conf.EnableSkel,
+                                StreamController.GetInstance().StartListener(conf.IpAddress, conf.SkelPort, conf.CloudPort, conf.EnableSkel,
                                     conf.EnableCloud);
                             }
                         }
