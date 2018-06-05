@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 23976914926048444}
   - component: {fileID: 114009898602412990}
   m_Layer: 0
-  m_Name: CloudMesh(Clone)
+  m_Name: CloudMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
