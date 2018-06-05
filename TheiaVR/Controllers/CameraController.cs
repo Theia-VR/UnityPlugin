@@ -5,44 +5,65 @@ using UnityEngine;
 public class CameraController : MonoBehaviour {
 
     Camera mainCamera;
-    float speed;
+    float speedKeyBoard;
+    float speedMouse;
+
+    float yaw;
+    float pitch;
+
+
+
 	// Use this for initialization
 	void Start () {
         mainCamera = Camera.main;
-        speed = 2f;
+        speedKeyBoard = 4f;
+        speedMouse = 2f;
+        yaw = 0.0f;
+        pitch = 0.0f;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-        Vector3 rotation;
+        /*float x = mainCamera.transform.position.x;
+        float z = mainCamera.transform.position.z;
+
+        mainCamera.transform.SetPositionAndRotation(new Vector3(x, 0f, z), Quaternion.identity);*/
+
         Vector3 move;
 
         move = new Vector3(0, 0, 0);
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            move = new Vector3(speed * Time.deltaTime, 0, 0);
+            move = new Vector3(speedKeyBoard * Time.deltaTime, 0, 0);
         }
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            move = new Vector3(-speed * Time.deltaTime, 0, 0);
+            move = new Vector3(-speedKeyBoard * Time.deltaTime, 0, 0);
         }
         if (Input.GetKey(KeyCode.DownArrow))
         {
-            move = new Vector3(0, 0, -speed * Time.deltaTime);
+            move = new Vector3(0, 0, -speedKeyBoard * Time.deltaTime);
         }
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            move = new Vector3(0, 0, speed * Time.deltaTime);
+            move = new Vector3(0, 0, speedKeyBoard * Time.deltaTime);
         }
 
-        float mouseInputX = Input.GetAxis("Mouse X");
+        mainCamera.transform.Translate(move);
+
+        /*float mouseInputX = Input.GetAxis("Mouse X");
         float mouseInputY = Input.GetAxis("Mouse Y");
         //rotation = new Vector3(-mouseInputY, mouseInputX, 0);
         rotation = new Vector3(0, mouseInputX, 0);
 
-        mainCamera.transform.Translate(move);
-        mainCamera.transform.Rotate(rotation);
+       
+        mainCamera.transform.eulerAngles = rotation;*/
+
+        yaw += speedMouse * Input.GetAxis("Mouse X");
+        pitch -= speedMouse * Input.GetAxis("Mouse Y");
+
+        mainCamera.transform.eulerAngles = new Vector3(pitch, yaw, 0f);
 
     }
 }
