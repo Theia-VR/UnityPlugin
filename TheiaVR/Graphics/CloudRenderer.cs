@@ -5,23 +5,27 @@ using UnityEngine;
 
 namespace TheiaVR.Graphics
 {
+    [RequireComponent(typeof(MeshFilter))]
     public class CloudRenderer : KinectRenderer
     {
-        private static CloudRenderer instance;
-        
-        public static CloudRenderer GetInstance()
-        {
-            return instance;
-        }
+        private Mesh mesh;
 
         private void Awake()
         {
-            base.SetMesh(GetComponent<MeshFilter>().mesh);
+            mesh = GetComponent<MeshFilter>().mesh;
         }
 
-        private void Start()
+        private new void Update()
         {
-            instance = this;
+            if (buffer != null && !buffer.IsEmpty())
+            {
+                Frame vFrame = buffer.Dequeue();
+
+                mesh.Clear();
+                mesh.vertices = vFrame.GetVectors();
+                mesh.colors = vFrame.GetColors();
+                mesh.SetIndices(vFrame.GetIndices(), MeshTopology.Points, 0);
+            }
         }
 
     }
