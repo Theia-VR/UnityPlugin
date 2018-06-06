@@ -89,6 +89,8 @@ namespace TheiaVR.Controllers
                     FrameBuffer vBuffer = new FrameBuffer();
 
                     skeletonObject.GetComponent<SkeletonRenderer>().SetBuffer(vBuffer);
+                    skeletonObject.GetComponent<SkeletonRenderer>().SetParent(skeletonObject);
+
 
                     skeletonListener = new KinectListener(vBuffer, 9);
 
