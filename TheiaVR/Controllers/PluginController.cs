@@ -59,6 +59,7 @@ namespace TheiaVR.Controllers
                     FrameBuffer vBuffer = new FrameBuffer();
 
                     vCloudMesh.GetComponent<CloudRenderer>().SetBuffer(vBuffer);
+                    vCloudMesh.GetComponent<CloudRenderer>().SetRemanence(aNetworkConfig.Remanence);
 
                     meshes.Add(aNetworkConfig.Id, vCloudMesh);
                         

@@ -27,6 +27,7 @@ namespace TheiaVR.Editor
             GUILayout.Width(75),
             GUILayout.Width(40),
             GUILayout.Width(40),
+            GUILayout.Width(30),
             GUILayout.Width(75)
         };
 
@@ -52,18 +53,9 @@ namespace TheiaVR.Editor
                 int skelPort = EditorPrefs.GetInt("skelPort" + i, 9877);
                 bool enableCloud = EditorPrefs.GetBool("enableCloud" + i, true);
                 bool enableSkel = EditorPrefs.GetBool("enableSkel" + i, true);
+                int remanence = EditorPrefs.GetInt("remanence" + i, 0);
 
-                if (enableCloud)
-                {
-                    //AddCloudRenderer();
-                }
-
-                if (enableSkel)
-                {
-                    //AddSkeletonRenderer();
-                }
-
-                networkConfigs.Add(new NetworkConfig(i,ipAddress, cloudPort, skelPort, enableCloud, enableSkel));
+                networkConfigs.Add(new NetworkConfig(i,ipAddress, cloudPort, skelPort, enableCloud, enableSkel, remanence));
             }
         }
 
@@ -79,6 +71,7 @@ namespace TheiaVR.Editor
                 EditorPrefs.SetInt("skelPort" + i, networkConfigs[i].SkelPort);
                 EditorPrefs.SetBool("enableCloud" + i, networkConfigs[i].EnableCloud);
                 EditorPrefs.SetBool("enableSkel" + i, networkConfigs[i].EnableSkel);
+                EditorPrefs.SetInt("remanence" + i, networkConfigs[i].Remanence);
             }
         }
 
@@ -94,42 +87,7 @@ namespace TheiaVR.Editor
                 DisplayStartUI();
                 Messages.Log("Displaying start");
             }
-        }
-
-        private void AddCloudRenderer()
-        {
-            if (GameObject.Find("CloudMesh") == null && GameObject.Find("CloudMesh(Clone)") == null)
-            {
-                cloudMesh = Resources.Load("CloudMesh", typeof(GameObject)) as GameObject;
-                GameObject gameObject = Instantiate(cloudMesh);
-                gameObject.name = "CloudMesh1";
-            }
-        }
-
-        private void RemoveCloudRenderer()
-        {
-            GameObject vCloudMesh = GameObject.Find("CloudMesh(Clone)");
-            for (int i = 0; i < networkConfigs.Count; i++)
-            {
-                if (networkConfigs[i].EnableCloud)
-                {
-                    return;
-                }
-            }
-
-            if (vCloudMesh)
-            {
-                DestroyImmediate(vCloudMesh.gameObject);
-            }
-        }
-
-        private void AddSkeletonRenderer()
-        {
-//            if (Camera.main.gameObject.GetComponent<SkeletonRenderer>() == null)
-//            {
-//                Camera.main.gameObject.AddComponent<SkeletonRenderer>();
-//            }
-        }
+        }        
 
         private void DisplayStartUI()
         {
@@ -199,7 +157,7 @@ namespace TheiaVR.Editor
                     }
                     catch (Exception vException)
                     {
-                        Messages.Log("<color=red>" + vException.Message + "</color>");
+                        Messages.LogError(vException.Message);
                     }
 
                     Messages.Log("TheiaVR correctly started");
@@ -220,7 +178,7 @@ namespace TheiaVR.Editor
                     }
                     catch (Exception vException)
                     {
-                        Messages.Log("<color=red>" + vException.Message + "</color>");
+                        Messages.LogError(vException.Message);
                     }
                 }
             }
@@ -243,18 +201,9 @@ namespace TheiaVR.Editor
                 networkConfigs[i].IpAddress = EditorGUILayout.TextField(networkConfigs[i].IpAddress, widthTable[0]);
                 networkConfigs[i].CloudPort = EditorGUILayout.IntField(networkConfigs[i].CloudPort, widthTable[1]);
                 networkConfigs[i].SkelPort = EditorGUILayout.IntField(networkConfigs[i].SkelPort, widthTable[2]);
-                if (EditorGUILayout.Toggle(networkConfigs[i].EnableCloud, widthTable[3]) !=
-                    networkConfigs[i].EnableCloud)
+                if (EditorGUILayout.Toggle(networkConfigs[i].EnableCloud, widthTable[3]) != networkConfigs[i].EnableCloud)
                 {
                     networkConfigs[i].EnableCloud = !networkConfigs[i].EnableCloud;
-                    if (networkConfigs[i].EnableCloud)
-                    {
-                        //AddCloudRenderer();
-                    }
-                    else
-                    {
-                        //RemoveCloudRenderer();
-                    }
                 }
 
                 if (EditorGUILayout.Toggle(networkConfigs[i].EnableSkel, widthTable[4]) != networkConfigs[i].EnableSkel)
@@ -268,19 +217,11 @@ namespace TheiaVR.Editor
                     }
 
                     networkConfigs[i].EnableSkel = !networkConfigs[i].EnableSkel;
-
-                    if (networkConfigs[i].EnableSkel)
-                    {
-                        AddSkeletonRenderer();
-                    }
-
-                    else
-                    {
-                        DestroyImmediate(Camera.main.gameObject.GetComponent<SkeletonRenderer>());
-                    }
                 }
 
-                if (GUILayout.Button("Delete", widthTable[5]))
+                networkConfigs[i].Remanence = EditorGUILayout.IntField(networkConfigs[i].Remanence, widthTable[5]);
+
+                if (GUILayout.Button("Delete", widthTable[6]))
                 {
                     networkConfigs.RemoveAt(i);
                     EditorPrefs.DeleteKey("ipAddress" + i);
@@ -288,6 +229,7 @@ namespace TheiaVR.Editor
                     EditorPrefs.DeleteKey("skelPort" + i);
                     EditorPrefs.DeleteKey("enableCloud" + i);
                     EditorPrefs.DeleteKey("enableSkel" + i);
+                    EditorPrefs.DeleteKey("remanence" + i);
                 }
                 
 
@@ -306,7 +248,8 @@ namespace TheiaVR.Editor
             GUILayout.Label("Skel port", widthTable[2]);
             GUILayout.Label("Cloud", widthTable[3]);
             GUILayout.Label("Skel", widthTable[4]);
-            GUILayout.Label("", widthTable[5]);
+            GUILayout.Label("Remanence", widthTable[5]);
+            GUILayout.Label("", widthTable[6]);
 
             EditorGUILayout.EndHorizontal();
         }
@@ -320,7 +263,7 @@ namespace TheiaVR.Editor
             EditorGUI.BeginDisabledGroup(started);
             if (GUILayout.Button("Add a new Kinect"))
             {
-                networkConfigs.Add(new NetworkConfig(networkConfigs.Count, "127.0.0.1", 9876, 9877, true, false));
+                networkConfigs.Add(new NetworkConfig(networkConfigs.Count, "127.0.0.1", 9876, 9877, true, false, 0));
             }
             EditorGUI.EndDisabledGroup();
             GUILayout.FlexibleSpace();
