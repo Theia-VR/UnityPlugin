@@ -14,8 +14,8 @@ public class CameraController : MonoBehaviour {
     private float pitch;
 
     public bool flymode;
-
-
+    public bool csmode;
+    public bool orbitmode;
 
     // For OrbitMode
     protected Transform _XForm_Camera;
@@ -43,32 +43,65 @@ public class CameraController : MonoBehaviour {
 
         if (flymode)
         {
-            Vector3 move;
-
-            move = new Vector3(0, 0, 0);
-            if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
-            {
-                move = new Vector3(speedKeyBoard * Time.deltaTime, 0, 0);
-            }
-            if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.Q))
-            {
-                move = new Vector3(-speedKeyBoard * Time.deltaTime, 0, 0);
-            }
-            if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
-            {
-                move = new Vector3(0, 0, -speedKeyBoard * Time.deltaTime);
-            }
-            if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.Z))
-            {
-                move = new Vector3(0, 0, speedKeyBoard * Time.deltaTime);
-            }
-
-            mainCamera.transform.Translate(move);
 
             yaw += speedMouse * Input.GetAxis("Mouse X");
             pitch -= speedMouse * Input.GetAxis("Mouse Y");
 
             mainCamera.transform.eulerAngles = new Vector3(pitch, yaw, 0f);
+
+            Vector3 move;
+            float x_move = 0;
+            float y_move = 0;
+            float z_move = 0;
+            
+            if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
+            {
+                x_move = speedKeyBoard * Time.deltaTime;
+            }
+            if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.Q))
+            {
+                x_move = -speedKeyBoard * Time.deltaTime;
+            }
+            if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
+            {
+                z_move = -speedKeyBoard * Time.deltaTime;
+            }
+            if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.Z))
+            {
+                z_move = speedKeyBoard * Time.deltaTime;
+            }
+            move = new Vector3(x_move, y_move , z_move);
+            mainCamera.transform.Translate(move);
+        }else if (csmode)
+        {
+            yaw += speedMouse * Input.GetAxis("Mouse X");
+            pitch -= speedMouse * Input.GetAxis("Mouse Y");
+
+            mainCamera.transform.eulerAngles = new Vector3(pitch, yaw, 0f);
+
+            Vector3 move;
+            float x_move = 0;
+            float y_move = 0;
+            float z_move = 0;
+
+            if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
+            {
+                x_move = speedKeyBoard * Time.deltaTime;
+            }
+            if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.Q))
+            {
+                x_move = -speedKeyBoard * Time.deltaTime;
+            }
+            if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
+            {
+                z_move = -speedKeyBoard * Time.deltaTime;
+            }
+            if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.Z))
+            {
+                z_move = speedKeyBoard * Time.deltaTime;
+            }
+            move = new Vector3(x_move, y_move, z_move);
+            _XForm_Parent.Translate(move);
         }
         else
         {
