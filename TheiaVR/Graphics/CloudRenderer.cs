@@ -33,20 +33,28 @@ namespace TheiaVR.Graphics
             if (buffer != null && !buffer.IsEmpty())
             {
                 Frame vFrame = buffer.Dequeue();
-                if (frames.Count >= remanence + 1)
-                {
-                    vFrame = frames[0];
-                    frames.RemoveAt(0);
 
-                    foreach (Frame vComposeFrame in frames)
+                if (remanence > 0)
+                {
+                    if (frames.Count > remanence)
                     {
-                        vFrame.Compose(vComposeFrame);
-                    }
-                }
+                        vFrame = frames[0];
+                        frames.RemoveAt(0);
 
-                if (frames.Count <= remanence)
-                {
-                    frames.Add(vFrame);
+                        if (remanence > 0)
+                        {
+                            foreach (Frame vComposeFrame in frames)
+                            {
+                                vFrame.Compose(vComposeFrame);
+                            }
+                        }
+                    }
+
+                    if (frames.Count <= remanence)
+                    {
+                        frames.Add(vFrame);
+                    }
+
                 }
 
                 try
