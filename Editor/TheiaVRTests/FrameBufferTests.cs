@@ -1,8 +1,6 @@
-﻿using System;
-using TheiaVR.Model;
-using TheiaVR.Graphics;
+﻿using TheiaVR.Graphics;
+using TheiaVR.Helpers;
 using NUnit.Framework;
-using System.Collections.Generic;
 
 namespace TheiaVRTests
 {
@@ -40,7 +38,7 @@ namespace TheiaVRTests
 
             Assert.IsTrue(vBuffer.IsEmpty());
 
-            Assert.Throws(typeof(Exception), delegate {
+            Assert.Throws(typeof(PluginException), delegate {
                 vBuffer.Dequeue();
             });
         }
