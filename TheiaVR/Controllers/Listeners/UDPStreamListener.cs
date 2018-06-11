@@ -7,7 +7,7 @@ using TheiaVR.Helpers;
 
 namespace TheiaVR.Controllers.Listeners
 {
-    public abstract class UDPStreamListener : StreamListener
+    public abstract class UdpStreamListener : IStreamListener
     {
         private Thread listener;
 
@@ -17,7 +17,7 @@ namespace TheiaVR.Controllers.Listeners
         {
             if (IsActive())
             {
-                throw new Exception("Already connected to UDP stream");
+                throw new PluginException("Already connected to UDP stream");
             }
             IPAddress vAddress = null;
 
@@ -32,11 +32,11 @@ namespace TheiaVR.Controllers.Listeners
                 var vAddresses = Dns.GetHostAddresses(aHost);
                 if (vAddresses.Length == 0)
                 {
-                    throw new Exception("Unable to retrieve address from specified host name : " + aHost);
+                    throw new PluginException("Unable to retrieve address from specified host name : " + aHost);
                 }
                 else if (vAddresses.Length > 1)
                 {
-                    throw new Exception("There is more that one IP address to the specified host : " + aHost);
+                    throw new PluginException("There is more that one IP address to the specified host : " + aHost);
                 }
                 vAddress = vAddresses[0];
             }

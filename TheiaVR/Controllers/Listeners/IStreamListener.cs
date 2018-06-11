@@ -1,6 +1,6 @@
 ﻿namespace TheiaVR.Controllers.Listeners
 {
-    public interface StreamListener
+    public interface IStreamListener
     {
 
         void Start(string aHost, int aPort);

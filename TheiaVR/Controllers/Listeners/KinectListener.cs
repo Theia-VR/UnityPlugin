@@ -4,9 +4,9 @@ using TheiaVR.Helpers;
 
 namespace TheiaVR.Controllers.Listeners
 {
-    class KinectListener : UDPStreamListener
+    class KinectListener : UdpStreamListener
     {
-        private int byteIndex;
+        private readonly int byteIndex;
 
         private FrameBuffer buffer;
 

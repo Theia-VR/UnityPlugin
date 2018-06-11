@@ -73,7 +73,7 @@ namespace TheiaVR.Controllers
                 }
                 else
                 {
-                    throw new Exception("Conflict, a cloud mesh is already instanciated for this kinect");
+                    throw new PluginException("Conflict, a cloud mesh is already instanciated for this kinect");
                 }
 
             }
@@ -90,8 +90,6 @@ namespace TheiaVR.Controllers
                     FrameBuffer vBuffer = new FrameBuffer();
 
                     skeletonObject.GetComponent<SkeletonRenderer>().SetBuffer(vBuffer);
-                    skeletonObject.GetComponent<SkeletonRenderer>().SetParent(skeletonObject);
-
 
                     skeletonListener = new KinectListener(vBuffer, 9);
 
@@ -103,7 +101,7 @@ namespace TheiaVR.Controllers
                 }
                 else
                 {
-                    throw new Exception("Conflict, a skeleton object is already instanciated for this kinect");
+                    throw new PluginException("Conflict, a skeleton object is already instanciated for this kinect");
                 }
             }
         }

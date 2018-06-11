@@ -20,7 +20,7 @@ namespace TheiaVR.Editor
 
         private List<NetworkConfig> networkConfigs;
 
-        private GUILayoutOption[] widthTable = new[]
+        private readonly GUILayoutOption[] widthTable = new[]
         {
             GUILayout.Width(150),
             GUILayout.Width(75),
@@ -145,7 +145,7 @@ namespace TheiaVR.Editor
             GUILayout.FlexibleSpace();
             if (stopped)
             {
-                EditorGUI.BeginDisabledGroup(checkIfNothingIsChecked() || !EditorApplication.isPlaying);
+                EditorGUI.BeginDisabledGroup(CheckIfNothingIsChecked() || !EditorApplication.isPlaying);
                 if (GUILayout.Button("Start", GUILayout.Width(70)))
                 {
                     Messages.Log("Starting TheiaVR plugin");
@@ -270,7 +270,7 @@ namespace TheiaVR.Editor
             EditorGUILayout.EndHorizontal();
         }
 
-        bool checkIfNothingIsChecked()
+        bool CheckIfNothingIsChecked()
         {
             foreach (var conf in networkConfigs)
             {

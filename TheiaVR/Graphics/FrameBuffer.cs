@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TheiaVR.Model;
+using TheiaVR.Helpers;
 
 namespace TheiaVR.Graphics
 {
@@ -41,7 +41,7 @@ namespace TheiaVR.Graphics
         {
             if (IsEmpty())
             {
-                throw new Exception("Frame buffer is empty, cannot dequeue");
+                throw new PluginException("Frame buffer is empty, cannot dequeue");
             }
 
             Frame vFrame = frames[0];

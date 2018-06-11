@@ -1,7 +1,6 @@
 ﻿using TheiaVR.Model;
 using System.Collections.Generic;
 using TheiaVR.Controllers;
-using TheiaVR.Helpers;
 using UnityEngine;
 
 namespace TheiaVR.Graphics
