@@ -27,10 +27,12 @@ namespace TheiaVR.Editor
             GUILayout.Width(75),
             GUILayout.Width(40),
             GUILayout.Width(40),
-            GUILayout.Width(30),
+            GUILayout.Width(150),
             GUILayout.Width(75)
         };
 
+        private int minValueSlider = 0; 
+        private int maxValueSlider = 5; 
 
         // Add menu item named "Kinect Plugin" to the Window menu
         [MenuItem("Kinect Plugin/Show plugin")]
@@ -185,7 +187,7 @@ namespace TheiaVR.Editor
 
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
-            minSize = new Vector2(481f, 248f);
+            minSize = new Vector2(601f, 248f);
         }
 
         void DrawTable()
@@ -219,7 +221,8 @@ namespace TheiaVR.Editor
                     networkConfigs[i].EnableSkel = !networkConfigs[i].EnableSkel;
                 }
 
-                networkConfigs[i].Remanence = EditorGUILayout.IntField(networkConfigs[i].Remanence, widthTable[5]);
+//                networkConfigs[i].Remanence = EditorGUILayout.IntField(networkConfigs[i].Remanence, widthTable[5]);
+                networkConfigs[i].Remanence = EditorGUILayout.IntSlider(networkConfigs[i].Remanence, minValueSlider, maxValueSlider, widthTable[5]);
 
                 if (GUILayout.Button("Delete", widthTable[6]))
                 {
