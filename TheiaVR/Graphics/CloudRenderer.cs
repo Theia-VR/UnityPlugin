@@ -49,8 +49,7 @@ namespace TheiaVR.Graphics
                             }
                         }
                     }
-
-                    if (frames.Count <= remanence)
+                    else if (frames.Count <= remanence)
                     {
                         frames.Add(vFrame);
                     }
