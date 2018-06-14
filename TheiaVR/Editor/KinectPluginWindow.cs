@@ -12,6 +12,7 @@ namespace TheiaVR.Editor
     public class KinectPluginWindow : EditorWindow
     {
         private bool enableUnityLogs;
+        private bool enableFileLogs;
         private bool started;
         private bool stopped;
 
@@ -47,6 +48,7 @@ namespace TheiaVR.Editor
 
             int networkConfigsCount = EditorPrefs.GetInt("networkConfigsCount", 1);
             enableUnityLogs = EditorPrefs.GetBool("enableUnityLogs", true);
+            enableFileLogs = EditorPrefs.GetBool("enableFileLogs", false);
 
             for (int i = 0; i < networkConfigsCount; i++)
             {
@@ -65,6 +67,7 @@ namespace TheiaVR.Editor
         {
             EditorPrefs.SetInt("networkConfigsCount", networkConfigs.Count);
             EditorPrefs.SetBool("enableUnityLogs", enableUnityLogs);
+            EditorPrefs.SetBool("enableFileLogs", enableFileLogs);
 
             for (int i = 0; i < networkConfigs.Count; i++)
             {
@@ -138,6 +141,19 @@ namespace TheiaVR.Editor
                 else
                 {
                     Messages.DisableUnityLogs();
+                }
+            }
+            
+            if (EditorGUILayout.Toggle("Store logs in file", enableFileLogs) != enableFileLogs)
+            {
+                enableFileLogs = !enableFileLogs;
+                if (enableFileLogs)
+                {
+                    Messages.EnableFileLogs();
+                }
+                else
+                {
+                    Messages.DisableFileLogs();
                 }
             }
 
