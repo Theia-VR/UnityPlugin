@@ -12,7 +12,7 @@ namespace TheiaVR.Controllers
     {
         private static PluginController instance = null;
         
-		//meshes taht we render
+		//meshes that we render
         private Dictionary<int, GameObject> meshes;
 		
 		//our listeners

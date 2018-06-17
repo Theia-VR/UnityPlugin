@@ -18,9 +18,11 @@ namespace TheiaVR.Editor
 
         public GameObject cloudMesh;
 
-
         private List<NetworkConfig> networkConfigs;
 
+        /// <summary>
+        /// Centralized width for table columns for headers and actual columns.
+        /// </summary>
         private readonly GUILayoutOption[] widthTable = new[]
         {
             GUILayout.Width(150),
@@ -35,13 +37,18 @@ namespace TheiaVR.Editor
         private int minValueSlider = 0; 
         private int maxValueSlider = 5; 
 
-        // Add menu item named "Kinect Plugin" to the Window menu
+        /// <summary>
+        /// Add menu item named "Kinect Plugin" to the Window menu
+        /// </summary>
         [MenuItem("Kinect Plugin/Show plugin")]
         public static void ShowWindow()
         {
             GetWindow(typeof(KinectPluginWindow), false, "Kinect Plugin");
         }
 
+        /// <summary>
+        /// When UI is enabled, initializing it with persisted data.
+        /// </summary>
         private void OnEnable()
         {
             networkConfigs = new List<NetworkConfig>();
@@ -63,6 +70,9 @@ namespace TheiaVR.Editor
             }
         }
 
+        /// <summary>
+        /// When UI is disabled, saving current data in EditorPrefs.
+        /// </summary>
         private void OnDisable()
         {
             EditorPrefs.SetInt("networkConfigsCount", networkConfigs.Count);
@@ -80,6 +90,9 @@ namespace TheiaVR.Editor
             }
         }
 
+        /// <summary>
+        /// On awake, displaying correct button based on the instance of the PluginController
+        /// </summary>
         private void Awake()
         {
             if (PluginController.GetInstance().IsActive())
@@ -94,18 +107,29 @@ namespace TheiaVR.Editor
             }
         }        
 
+        /// <summary>
+        /// Displaying the Start button on the UI
+        /// </summary>
         private void DisplayStartUI()
         {
             stopped = true;
             started = false;
         }
 
+        /// <summary>
+        /// Displaying the Stop button on the UI
+        /// </summary>
         private void DisplayStopUI()
         {
             stopped = false;
             started = true;
         }
 
+        /// <summary>
+        /// Checking the Play button state of Unity.
+        /// Useful to display stop button when user use directly the play button of Unity to stop the plugin.
+        /// </summary>
+        /// <param name="aState">The state of the playmode button</param>
         private void CheckPlayModeState(PlayModeStateChange aState)
         {
             if (aState == PlayModeStateChange.ExitingPlayMode)
@@ -114,6 +138,9 @@ namespace TheiaVR.Editor
             }
         }
 
+        /// <summary>
+        /// To display in GUI
+        /// </summary>
         void OnGUI()
         {
             // Listening to play button
@@ -149,11 +176,11 @@ namespace TheiaVR.Editor
                 enableFileLogs = !enableFileLogs;
                 if (enableFileLogs)
                 {
-                    Messages.EnableFileLogs();
+//                    Messages.EnableFileLogs();
                 }
                 else
                 {
-                    Messages.DisableFileLogs();
+//                    Messages.DisableFileLogs();
                 }
             }
 
@@ -206,6 +233,9 @@ namespace TheiaVR.Editor
             minSize = new Vector2(601f, 248f);
         }
 
+        /// <summary>
+        /// Draw the Kinect table.
+        /// </summary>
         void DrawTable()
         {
             EditorGUILayout.BeginVertical();
@@ -237,6 +267,8 @@ namespace TheiaVR.Editor
                     networkConfigs[i].EnableSkel = !networkConfigs[i].EnableSkel;
                 }
 
+//                EditorGUILayout.EndHorizontal();
+//                EditorGUILayout.BeginHorizontal();
 //                networkConfigs[i].Remanence = EditorGUILayout.IntField(networkConfigs[i].Remanence, widthTable[5]);
                 networkConfigs[i].Remanence = EditorGUILayout.IntSlider(networkConfigs[i].Remanence, minValueSlider, maxValueSlider, widthTable[5]);
 
@@ -258,6 +290,9 @@ namespace TheiaVR.Editor
             EditorGUILayout.EndVertical();
         }
 
+        /// <summary>
+        /// Draw the header of the table.
+        /// </summary>
         void DrawHeader()
         {
             EditorGUILayout.BeginHorizontal();
@@ -273,6 +308,9 @@ namespace TheiaVR.Editor
             EditorGUILayout.EndHorizontal();
         }
 
+        /// <summary>
+        /// Draw the Add a Kinect button.
+        /// </summary>
         void DrawAddButton()
         {
             EditorGUILayout.Separator();
@@ -289,6 +327,10 @@ namespace TheiaVR.Editor
             EditorGUILayout.EndHorizontal();
         }
 
+        /// <summary>
+        /// Checks the cloud and skel toggles.
+        /// </summary>
+        /// <returns>true if nothing is checked</returns>
         bool CheckIfNothingIsChecked()
         {
             foreach (var conf in networkConfigs)
