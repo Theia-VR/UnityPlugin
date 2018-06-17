@@ -12,12 +12,17 @@ namespace TheiaVR.Controllers
     {
         private static PluginController instance = null;
         
+		//meshes taht we render
         private Dictionary<int, GameObject> meshes;
+		
+		//our listeners
         private Dictionary<int, KinectListener> cloudListeners;
 
+		//Same for skeleton, only one instance
         private GameObject skeletonObject;
         private KinectListener skeletonListener;
         
+		//to check if the listeners correctly started
         private bool listening;
 
         private PluginController() {
@@ -39,6 +44,7 @@ namespace TheiaVR.Controllers
         
         public void Start(List<NetworkConfig> aKinectNetworkConfigs)
         {
+			// We start each Kinect dataFlow with configs given by user
             foreach (NetworkConfig vKinectConfig in aKinectNetworkConfigs)
             {
                 Start(vKinectConfig);
@@ -47,28 +53,35 @@ namespace TheiaVR.Controllers
 
         public void Start(NetworkConfig aNetworkConfig)
         {
+			//Cloud instanciation
             if (aNetworkConfig.EnableCloud)
             {
+				//Checking if we don't have this cloud 
                 if (!meshes.ContainsKey(aNetworkConfig.Id) && !cloudListeners.ContainsKey(aNetworkConfig.Id))
                 {
+					//We load our Mesh
                     GameObject vCloudMesh = Resources.Load("Cloud", typeof(GameObject)) as GameObject;
                     vCloudMesh = MonoBehaviour.Instantiate(vCloudMesh);
                     vCloudMesh.name = "Kinect - " + aNetworkConfig.Id + " - CR";
                     vCloudMesh.AddComponent<CloudRenderer>();
 
+					//Associate a buffer
                     FrameBuffer vBuffer = new FrameBuffer();
 
                     vCloudMesh.GetComponent<CloudRenderer>().SetBuffer(vBuffer);
                     vCloudMesh.GetComponent<CloudRenderer>().SetRemanence(aNetworkConfig.Remanence);
 
+					//Adding this mesh at our dictonnary
                     meshes.Add(aNetworkConfig.Id, vCloudMesh);
                         
+					//Starting a cloudListner and adding at our dictonnary
                     cloudListeners.Add(aNetworkConfig.Id, new KinectListener(vBuffer, 8));
 
                     Messages.Log("Launching cloud listener: " + aNetworkConfig.IpAddress + ", " + aNetworkConfig.CloudPort);
                     cloudListeners[aNetworkConfig.Id].Start(aNetworkConfig.IpAddress, aNetworkConfig.CloudPort);
                     Messages.Log("Cloud listener started for Kinect n°" + aNetworkConfig.Id);
 
+					//We are now listening
                     listening = true;
                 }
                 else
@@ -80,15 +93,19 @@ namespace TheiaVR.Controllers
 
             if (aNetworkConfig.EnableSkel)
             {
+				//Checking if we don't have any skeleton instanciated
                 if (skeletonObject == null && skeletonListener == null)
                 {
+					//We load our Skeleton
                     skeletonObject = Resources.Load("Skeleton", typeof(GameObject)) as GameObject;
                     skeletonObject = MonoBehaviour.Instantiate(skeletonObject);
                     skeletonObject.name = "Kinect - " + aNetworkConfig.Id + " - SR";
                     skeletonObject.AddComponent<SkeletonRenderer>();
 
+					//Associate a buffer
                     FrameBuffer vBuffer = new FrameBuffer();
 
+					//Adding this mesh at our single instance of Skeleton
                     skeletonObject.GetComponent<SkeletonRenderer>().SetBuffer(vBuffer);
 
                     skeletonListener = new KinectListener(vBuffer, 9);
@@ -97,6 +114,7 @@ namespace TheiaVR.Controllers
                     skeletonListener.Start(aNetworkConfig.IpAddress, aNetworkConfig.SkelPort);
                     Messages.Log("Skeleton listener started for Kinect n°" + aNetworkConfig.Id);
 
+					//We are now listening
                     listening = true;
                 }
                 else
@@ -109,6 +127,7 @@ namespace TheiaVR.Controllers
         public void Stop()
         {
 
+		    //Stop listeners first, then meshes an skeletonObject
             foreach (KeyValuePair<int, GameObject> vCloudInfos in meshes)
             {
                 if (cloudListeners.ContainsKey(vCloudInfos.Key))
@@ -134,9 +153,11 @@ namespace TheiaVR.Controllers
 
             }
 
+			//We don't listen anymore
             listening = false;
         }
 
+		//For other classes to know if we are launched
         public bool IsActive()
         {
             return listening;

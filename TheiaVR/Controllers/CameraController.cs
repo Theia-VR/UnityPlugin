@@ -4,18 +4,22 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour {
 
-    Camera mainCamera;
 
+	////////////////////////////////////////////////////// ATTACH MANUALLY THIS SCRIPT TO THE MAIN CAMERA OR CAMERA FOLLOWING SUBJECT OF INTEREST //////////////////////////////////////////////////////
+	
+    //Reference for the mainCamera
+	Camera mainCamera;
+
+	//Public attribute to set toogle boxes in Unity, by default orbitMode is activated
+	public bool flymode;
+    public bool csmode;
+    public bool orbitmode;
+	
     // For FlyMode
     public float speedKeyBoard = 4f;
     public float speedMouse =2f;
-
     private float yaw;
     private float pitch;
-
-    public bool flymode;
-    public bool csmode;
-    public bool orbitmode;
 
     // For OrbitMode
     protected Transform _XForm_Camera;
@@ -43,12 +47,17 @@ public class CameraController : MonoBehaviour {
 
         if (flymode)
         {
-
+			//Updating the rotates angles (not need of %360 because Unity handle it)
             yaw += speedMouse * Input.GetAxis("Mouse X");
             pitch -= speedMouse * Input.GetAxis("Mouse Y");
 
             mainCamera.transform.eulerAngles = new Vector3(pitch, yaw, 0f);
 
+			//Keys Binding to move the Object :
+			// D or RightArrow --> go right
+			// Q or LeftArrow --> go left
+			// S or DownArrow --> go back
+			// Z or UpArrow --> go forward
             Vector3 move;
             float x_move = 0;
             float y_move = 0;
@@ -71,9 +80,12 @@ public class CameraController : MonoBehaviour {
                 z_move = speedKeyBoard * Time.deltaTime;
             }
             move = new Vector3(x_move, y_move , z_move);
+			
+			// when vector is construc, translate the transform attribute of the camera (move the camera in the scene in absolute position)
             mainCamera.transform.Translate(move);
         }else if (csmode)
         {
+			//Same as flymode, but move the mainCamera parent (seems like move in CounterStrike games)
             yaw += speedMouse * Input.GetAxis("Mouse X");
             pitch -= speedMouse * Input.GetAxis("Mouse Y");
 
@@ -106,6 +118,7 @@ public class CameraController : MonoBehaviour {
         else
         {
 
+			
             //Rotation of the Camera based on Mouse Coordinates
             if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
             {
