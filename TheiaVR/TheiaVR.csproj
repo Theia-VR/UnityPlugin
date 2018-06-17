@@ -46,21 +46,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\RenderingController.cs" />
     <Compile Include="Controllers\Listeners\KinectListener.cs" />
     <Compile Include="Controllers\Listeners\IStreamListener.cs" />
     <Compile Include="Controllers\Listeners\UdpStreamListener.cs" />
     <Compile Include="Controllers\PluginController.cs" />
     <Compile Include="Editor\KinectPluginWindow.cs" />
     <Compile Include="Graphics\CloudRenderer.cs" />
-    <Compile Include="Graphics\FrameBuffer.cs" />
     <Compile Include="Graphics\KinectRenderer.cs" />
     <Compile Include="Graphics\SkeletonRenderer.cs" />
     <Compile Include="Helpers\Messages.cs" />
+    <Compile Include="Helpers\Observer\Observer.cs" />
+    <Compile Include="Helpers\Observer\Subject.cs" />
     <Compile Include="Helpers\PluginException.cs" />
     <Compile Include="Model\Frame.cs" />
     <Compile Include="Model\NetworkConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
