@@ -1,5 +1,6 @@
 ﻿namespace TheiaVR.Controllers.Listeners
 {
+	//Contract of each cloudListener and SkeletonListener
     public interface IStreamListener
     {
 

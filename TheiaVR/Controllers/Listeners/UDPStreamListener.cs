@@ -9,10 +9,12 @@ namespace TheiaVR.Controllers.Listeners
 {
     public abstract class UdpStreamListener : IStreamListener
     {
+		//each listener is a Thread
         private Thread listener;
 
         private bool listening = false;
 
+		//Start listner in common
         public void Start(string aHost, int aPort)
         {
             if (IsActive())
@@ -47,6 +49,7 @@ namespace TheiaVR.Controllers.Listeners
             listener.Start(new IPEndPoint(vAddress, aPort));
         }
 
+		//Stop listener in common
         public void Stop()
         {
             listening = false;
@@ -56,6 +59,7 @@ namespace TheiaVR.Controllers.Listeners
             }
         }
 
+		//Listen listener in common
         protected void Listen(object aIPEndPoint)
         {
             IPEndPoint vIPEndPoint = (IPEndPoint)aIPEndPoint;
@@ -67,6 +71,7 @@ namespace TheiaVR.Controllers.Listeners
                     Byte[] vBytes = vStreamer.Receive(ref vIPEndPoint);
                     if (vBytes.Length > 0)
                     {
+						//KinectListener will parse the stream
                         ParseStream(vBytes);
                     }
                     else
