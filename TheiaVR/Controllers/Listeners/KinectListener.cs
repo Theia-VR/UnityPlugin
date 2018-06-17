@@ -6,10 +6,13 @@ namespace TheiaVR.Controllers.Listeners
 {
     class KinectListener : UdpStreamListener
     {
-		//Keeping the index of the parseed Item
+		// UDP packet head size (skeleton -> 9, cloud -> 8)
         private readonly int byteIndex;
         
+        // Current frame in build
         private Frame frame;
+
+        // Current timestamp of the frame we are building
         private long timestamp;
 
         public KinectListener(int aByteIndex)
@@ -22,7 +25,7 @@ namespace TheiaVR.Controllers.Listeners
 			//If we haven't finish parsing
             if (aBytes.Length - byteIndex > 0)
             {
-				//We receive a timeStamp first at 0 
+				// Frame timeStamp is the first byte of the chunk 
                 long vTimeStamp = BitConverter.ToInt64(aBytes, 0);
 
 				//Keeping the first vertex index
@@ -34,20 +37,20 @@ namespace TheiaVR.Controllers.Listeners
                 {
                     try
                     {
-						//1 bytes for each coordinates
+						// 4 bytes for each coordinates
                         float x = BitConverter.ToSingle(aBytes, vByteIndex);
                         float y = BitConverter.ToSingle(aBytes, vByteIndex + 4);
                         float z = BitConverter.ToSingle(aBytes, vByteIndex + 8);
-						//1 bytes for each color
+						// 1 bytes for each color
                         byte r = aBytes[vByteIndex + 12];
                         byte g = aBytes[vByteIndex + 13];
                         byte b = aBytes[vByteIndex + 14];
 
                         BuildFrame(vTimeStamp, x, y, z, r, g, b);
 
-						//a new vertex has been added
+						// a new vertex has been added
                         vVertexIndex++;
-						//we have parse 16bytes, so we go to the +16bytes in aBytes
+						// we have parse 16bytes, so we go to the +16bytes in aBytes
                         vByteIndex += 16;
                     }
                     catch (Exception vError)

@@ -45,6 +45,8 @@ namespace TheiaVR.Graphics
                         gameObjects[i].transform.SetPositionAndRotation(vPositions[i], Quaternion.identity);
                     }
                 }
+
+                frame = null;
             }
         }
     }
