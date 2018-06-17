@@ -43,12 +43,7 @@ namespace TheiaVR.Controllers.Listeners
                         byte g = aBytes[vByteIndex + 13];
                         byte b = aBytes[vByteIndex + 14];
 
-<<<<<<< Updated upstream
-						//we fill the buffer with new points
-                        buffer.AddPoint(vTimeStamp, x, y, z, r, g, b);
-=======
                         BuildFrame(vTimeStamp, x, y, z, r, g, b);
->>>>>>> Stashed changes
 
 						//a new vertex has been added
                         vVertexIndex++;
