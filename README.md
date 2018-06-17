@@ -33,10 +33,13 @@ First, you need to launch KinectStreamer with the correct IP address of the remo
 Then, you need to launch Kinect Studio and load your video OR wire up a kinect to your computer. Click on connect and on play to start the stream.
 In the KinectStreamer, start to send the stream with UDP.
 
-You can know launch Unity and add the .dll of this project into your assets folder. You will then see a new menu named Kinect Plugin. Click on it and on "Show plugin". Write the ip address of the computer using KinectStreamer, the correct ports and number of points wanted. Check what you want to receive and render.
+You can now launch Unity and add the folder "UnityPlugin" located in /release into the assets folder of your project. You will then see a new menu named Kinect Plugin. Click on it and on "Show plugin". Write the ip address of the computer using KinectStreamer, the correct ports and number of points wanted. Check what you want to receive and render.
 
 Then, go on play mode in Unity to be able to start the Kinect Plugin with the start button.
 
+If the point cloud is pink, go in the resources folder of the plugin in Unity, and drag and drop the Gs billboard file on the PointCloudMaterial. it should then go from pink to a white point cloud. Then, check if the Cloud.prefab has the PointCloudMaterial. If not, drag and drop the PointCloudMaterial on the Cloud prefab.
+
+You can change the size of the cloud points by modifying the pointSize parameter in the PointCloudMaterial.
 
 # Development Environment : 
 ## Revision Control system : 
