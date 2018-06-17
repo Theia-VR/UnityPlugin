@@ -4,10 +4,11 @@ using System.Net.Sockets;
 using System.Text.RegularExpressions;
 using System.Threading;
 using TheiaVR.Helpers;
+using TheiaVR.Helpers.Observer;
 
 namespace TheiaVR.Controllers.Listeners
 {
-    public abstract class UdpStreamListener : IStreamListener
+    public abstract class UdpStreamListener : Subject, IStreamListener 
     {
 		//each listener is a Thread
         private Thread listener;

@@ -1,10 +1,6 @@
 ﻿using System.Collections.Generic;
 using TheiaVR.Model;
-using TheiaVR.Controllers.Listeners;
 using TheiaVR.Graphics;
-using UnityEngine;
-using TheiaVR.Helpers;
-using System;
 
 namespace TheiaVR.Controllers
 {
@@ -12,24 +8,17 @@ namespace TheiaVR.Controllers
     {
         private static PluginController instance = null;
         
-		//meshes that we render
-        private Dictionary<int, GameObject> meshes;
-		
-		//our listeners
-        private Dictionary<int, KinectListener> cloudListeners;
-
-		//Same for skeleton, only one instance
-        private GameObject skeletonObject;
-        private KinectListener skeletonListener;
+        private List<RenderingController> cloudRenderers;
         
+        private RenderingController skeletonRenderer;
+       
 		//to check if the listeners correctly started
         private bool listening;
 
         private PluginController() {
 
-            cloudListeners = new Dictionary<int, KinectListener>();
-            meshes = new Dictionary<int, GameObject>();
-
+            cloudRenderers = new List<RenderingController>();
+            skeletonRenderer = null;
             listening = false;
         }
         
@@ -56,101 +45,42 @@ namespace TheiaVR.Controllers
 			//Cloud instanciation
             if (aNetworkConfig.EnableCloud)
             {
-				//Checking if we don't have this cloud 
-                if (!meshes.ContainsKey(aNetworkConfig.Id) && !cloudListeners.ContainsKey(aNetworkConfig.Id))
-                {
-					//We load our Mesh
-                    GameObject vCloudMesh = Resources.Load("Cloud", typeof(GameObject)) as GameObject;
-                    vCloudMesh = MonoBehaviour.Instantiate(vCloudMesh);
-                    vCloudMesh.name = "Kinect - " + aNetworkConfig.Id + " - CR";
-                    vCloudMesh.AddComponent<CloudRenderer>();
+                RenderingController vCloudRenderer = new RenderingController(aNetworkConfig, typeof(CloudRenderer), 8);
+                vCloudRenderer.CreateRenderers();
+                vCloudRenderer.Start();
+                cloudRenderers.Add(vCloudRenderer);
 
-					//Associate a buffer
-                    FrameBuffer vBuffer = new FrameBuffer();
-
-                    vCloudMesh.GetComponent<CloudRenderer>().SetBuffer(vBuffer);
-                    vCloudMesh.GetComponent<CloudRenderer>().SetRemanence(aNetworkConfig.Remanence);
-
-					//Adding this mesh at our dictonnary
-                    meshes.Add(aNetworkConfig.Id, vCloudMesh);
-                        
-					//Starting a cloudListner and adding at our dictonnary
-                    cloudListeners.Add(aNetworkConfig.Id, new KinectListener(vBuffer, 8));
-
-                    Messages.Log("Launching cloud listener: " + aNetworkConfig.IpAddress + ", " + aNetworkConfig.CloudPort);
-                    cloudListeners[aNetworkConfig.Id].Start(aNetworkConfig.IpAddress, aNetworkConfig.CloudPort);
-                    Messages.Log("Cloud listener started for Kinect n°" + aNetworkConfig.Id);
-
-					//We are now listening
-                    listening = true;
-                }
-                else
-                {
-                    throw new PluginException("Conflict, a cloud mesh is already instanciated for this kinect");
-                }
-
+                listening = true;
             }
 
-            if (aNetworkConfig.EnableSkel)
+            if (aNetworkConfig.EnableSkel && skeletonRenderer == null)
             {
-				//Checking if we don't have any skeleton instanciated
-                if (skeletonObject == null && skeletonListener == null)
-                {
-					//We load our Skeleton
-                    skeletonObject = Resources.Load("Skeleton", typeof(GameObject)) as GameObject;
-                    skeletonObject = MonoBehaviour.Instantiate(skeletonObject);
-                    skeletonObject.name = "Kinect - " + aNetworkConfig.Id + " - SR";
-                    skeletonObject.AddComponent<SkeletonRenderer>();
+                RenderingController vSkeletonRenderer = new RenderingController(aNetworkConfig, typeof(SkeletonRenderer), 9);
+                vSkeletonRenderer.CreateRenderers();
+                vSkeletonRenderer.Start();
+                skeletonRenderer = vSkeletonRenderer;
 
-					//Associate a buffer
-                    FrameBuffer vBuffer = new FrameBuffer();
-
-					//Adding this mesh at our single instance of Skeleton
-                    skeletonObject.GetComponent<SkeletonRenderer>().SetBuffer(vBuffer);
-
-                    skeletonListener = new KinectListener(vBuffer, 9);
-
-                    Messages.Log("Launching skeleton listener: " + aNetworkConfig.IpAddress + ", " + aNetworkConfig.SkelPort);
-                    skeletonListener.Start(aNetworkConfig.IpAddress, aNetworkConfig.SkelPort);
-                    Messages.Log("Skeleton listener started for Kinect n°" + aNetworkConfig.Id);
-
-					//We are now listening
-                    listening = true;
-                }
-                else
-                {
-                    throw new PluginException("Conflict, a skeleton object is already instanciated for this kinect");
-                }
+                listening = true;
             }
         }
 
         public void Stop()
         {
-
-		    //Stop listeners first, then meshes an skeletonObject
-            foreach (KeyValuePair<int, GameObject> vCloudInfos in meshes)
+            
+            foreach (RenderingController vCloudRenderer in cloudRenderers)
             {
-                if (cloudListeners.ContainsKey(vCloudInfos.Key))
-                {
-                    cloudListeners[vCloudInfos.Key].Stop();
-                    cloudListeners.Remove(vCloudInfos.Key);
-                }
-                MonoBehaviour.DestroyImmediate(vCloudInfos.Value);
-
-                Messages.Log("Cloud treatment stopped for Kinect n°" + vCloudInfos.Key);
+                vCloudRenderer.Stop();
+                vCloudRenderer.DestroyRenderers();
             }
 
-            meshes.Clear();
+            cloudRenderers.Clear();
             
-            if (skeletonListener != null && skeletonObject != null)
+            if (skeletonRenderer != null )
             {
-                skeletonListener.Stop();
-                MonoBehaviour.DestroyImmediate(skeletonObject);
+                skeletonRenderer.Stop();
+                skeletonRenderer.DestroyRenderers();
 
-                skeletonListener = null;
-                skeletonObject = null;
-                Messages.Log("Skeleton treatment stopped");
-
+                skeletonRenderer = null;
             }
 
 			//We don't listen anymore

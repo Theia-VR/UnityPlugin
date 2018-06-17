@@ -1,6 +1,7 @@
 ﻿using TheiaVR.Model;
 using System.Collections.Generic;
 using UnityEngine;
+using TheiaVR.Helpers;
 
 namespace TheiaVR.Graphics
 {
@@ -21,11 +22,9 @@ namespace TheiaVR.Graphics
         private void Update()
         {
             
-            if (buffer != null && !buffer.IsEmpty())
+            if (frame != null)
             {
-                //We dequeue if not empty
-                Frame vFrame = buffer.Dequeue();
-                Vector3[] vPositions = vFrame.GetVectors();
+                Vector3[] vPositions = frame.GetVectors();
                 
 				//if we don't have any game objects instanciated, we instanciate them
                 if (gameObject != null && vPositions != null && gameObjects.Count <= 0 && vPositions.Length > 0)

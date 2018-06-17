@@ -176,11 +176,11 @@ namespace TheiaVR.Editor
                 enableFileLogs = !enableFileLogs;
                 if (enableFileLogs)
                 {
-//                    Messages.EnableFileLogs();
+                    //Messages.EnableFileLogs();
                 }
                 else
                 {
-//                    Messages.DisableFileLogs();
+                   // Messages.DisableFileLogs();
                 }
             }
 

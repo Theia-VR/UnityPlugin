@@ -7,10 +7,10 @@ namespace TheiaVR.Graphics
 {
     public abstract class KinectRenderer : MonoBehaviour
     {
-        protected FrameBuffer buffer;
+        protected Frame frame;
         
-        public void SetBuffer(FrameBuffer aBuffer){
-            buffer = aBuffer;
+        public void SetFrame(Frame aFrame){
+            frame = aFrame;
         }
         
         protected void OnApplicationQuit()

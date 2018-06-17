@@ -29,16 +29,6 @@ namespace TheiaVR.Model
             colors.Add(new Color(aR / 255f, aG / 255f, aB / 255f));
             indices.Add(indices.Count);
         }
-
-        public void Compose(Frame aFrame)
-        {
-            vectors.AddRange(aFrame.GetVectors());
-            colors.AddRange(aFrame.GetColors());
-            for(int i = 0; i < aFrame.GetIndices().Length; i++)
-            {
-                indices.Add(indices.Count);
-            }
-        }
         
         public Vector3[] GetVectors()
         {

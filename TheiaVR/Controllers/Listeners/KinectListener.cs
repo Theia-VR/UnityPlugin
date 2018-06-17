@@ -1,5 +1,5 @@
 ﻿using System;
-using TheiaVR.Graphics;
+using TheiaVR.Model;
 using TheiaVR.Helpers;
 
 namespace TheiaVR.Controllers.Listeners
@@ -8,13 +8,12 @@ namespace TheiaVR.Controllers.Listeners
     {
 		//Keeping the index of the parseed Item
         private readonly int byteIndex;
+        
+        private Frame frame;
+        private long timestamp;
 
-		// buffer to be refill when receiving points
-        private FrameBuffer buffer;
-
-        public KinectListener(FrameBuffer aBuffer, int aByteIndex)
+        public KinectListener(int aByteIndex)
         {
-            buffer = aBuffer;
             byteIndex = aByteIndex;
         }
         
@@ -44,8 +43,12 @@ namespace TheiaVR.Controllers.Listeners
                         byte g = aBytes[vByteIndex + 13];
                         byte b = aBytes[vByteIndex + 14];
 
+<<<<<<< Updated upstream
 						//we fill the buffer with new points
                         buffer.AddPoint(vTimeStamp, x, y, z, r, g, b);
+=======
+                        BuildFrame(vTimeStamp, x, y, z, r, g, b);
+>>>>>>> Stashed changes
 
 						//a new vertex has been added
                         vVertexIndex++;
@@ -58,6 +61,18 @@ namespace TheiaVR.Controllers.Listeners
                     }
                 }
             }
+        }
+
+        public void BuildFrame(long aTimeStamp, float aX, float aY, float aZ, byte aR, byte aG, byte aB)
+        {
+            if (aTimeStamp > timestamp)
+            {
+                timestamp = aTimeStamp;
+                Notify(frame);
+
+                frame = new Frame();
+            }
+            frame.AddPoint(aX, aY, aZ, aR, aG, aB);            
         }
     }
 }
