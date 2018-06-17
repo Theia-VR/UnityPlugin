@@ -6,6 +6,7 @@ namespace TheiaVR.Graphics
 {
     public class FrameBuffer
     {
+		//Within a FrameBuffer we have the timestamp of the frame, the last Frame to render and a List to render affter refflied by a listener
         private long timestamp;
 
         private Frame frame;
@@ -26,6 +27,7 @@ namespace TheiaVR.Graphics
 
         public void AddPoint(long aTimeStamp, float aX, float aY, float aZ, byte aR, byte aG, byte aB)
         {
+			//a different timeStamp mean a new Frame sended by the kinectStreamer software
             if (aTimeStamp > timestamp)
             {
                 timestamp = aTimeStamp;

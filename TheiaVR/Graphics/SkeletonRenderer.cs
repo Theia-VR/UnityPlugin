@@ -12,6 +12,7 @@ namespace TheiaVR.Graphics
         
         private void Awake()
         {
+			//We need to load ressource for render a prefabs for a part of our skeleton
             gameObject = Resources.Load("Vertex_prefabs", typeof(GameObject)) as GameObject;
 
             gameObjects = new List<GameObject>();
@@ -22,10 +23,11 @@ namespace TheiaVR.Graphics
             
             if (buffer != null && !buffer.IsEmpty())
             {
-                
+                //We dequeue if not empty
                 Frame vFrame = buffer.Dequeue();
                 Vector3[] vPositions = vFrame.GetVectors();
                 
+				//if we don't have any game objects instanciated, we instanciate them
                 if (gameObject != null && vPositions != null && gameObjects.Count <= 0 && vPositions.Length > 0)
                 {
                     for (int i = 0; i < vPositions.Length; i++)
@@ -35,10 +37,12 @@ namespace TheiaVR.Graphics
                         gameObjects.Add(vGameObject);
                     }
                 }
+			    //if we have all ouyr gameObjects, we set their absolute position
                 else if (gameObjects != null && vPositions != null && vPositions.Length > 0)
                 {
                     for (int i = 0; i < gameObjects.Count; i++)
                     {
+						
                         gameObjects[i].transform.SetPositionAndRotation(vPositions[i], Quaternion.identity);
                     }
                 }
